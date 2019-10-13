@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/kahvalti"
+        android:icon="@drawable/kahvalti"
+        android:title="@string/kahvalt"
+        app:cnb_iconColor="@color/kahvalti" />
+
+    <item
+        android:id="@+id/ogle"
+        android:icon="@drawable/ic_ogle"
+        android:title="@string/ogle"
+        app:cnb_iconColor="@color/ogle" />
+
+    <item
+        android:id="@+id/aksam"
+        android:icon="@drawable/ic_aksam"
+        android:title="@string/aksam"
+        app:cnb_iconColor="@color/aksam" />
+
+    <item
+        android:id="@+id/vegan"
+        android:icon="@drawable/ic_vegan"
+        android:title="@string/vegan"
+        app:cnb_iconColor="@color/vegan" />
+    <item
+        android:id="@+id/diyet"
+        android:icon="@drawable/ic_diet"
+        android:title="@string/diyet"
+        app:cnb_iconColor="@color/diyet" />
+
+</menu>
