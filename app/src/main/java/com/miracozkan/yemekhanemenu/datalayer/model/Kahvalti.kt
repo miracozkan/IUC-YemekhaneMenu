@@ -1,5 +1,8 @@
 package com.miracozkan.yemekhanemenu.datalayer.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
 // Code with ❤
 //┌─────────────────────────────┐
 //│ Created by Mirac OZKAN      │
@@ -10,4 +13,8 @@ package com.miracozkan.yemekhanemenu.datalayer.model
 //└─────────────────────────────┘
 
 
-class Kahvalti
+@Entity(tableName = "Kahvalti")
+data class Kahvalti(
+    @PrimaryKey(autoGenerate = true)
+    val _id: Int? = null
+)

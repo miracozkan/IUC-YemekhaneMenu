@@ -12,8 +12,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.miracozkan.yemekhanemenu.R
+import com.miracozkan.yemekhanemenu.datalayer.db.ProjectDatabase
 import com.miracozkan.yemekhanemenu.datalayer.model.*
-import com.miracozkan.yemekhanemenu.datalayer.remote.RetrofitClient
 import com.miracozkan.yemekhanemenu.ui.fragment.*
 import com.miracozkan.yemekhanemenu.util.*
 import com.miracozkan.yemekhanemenu.vm.MenuViewModel
@@ -23,10 +23,8 @@ import kotlinx.android.synthetic.main.bottom_sheet_date.*
 class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener,
     OgleFragment.OnDataPass {
 
-    //TODO Room eklenecek
-
     private val menuRepository by lazy {
-        DependencyUtil.getMenuRepository(RetrofitClient.getClient())
+        DependencyUtil.getMenuRepository(ProjectDatabase.getInstance(this).localDataDao())
     }
 
     private val menuViewModel by lazy {
@@ -38,10 +36,11 @@ class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener,
 
     private var counter = 0
     private lateinit var date: String
-    private lateinit var baseResponse: BaseResponse
+    private lateinit var allType: AllType
     private var selectedFragment: String = ""
     private var selectedFragmentId: Int = -1
     private var iconId: Int = -1
+    private val errorMessage = "Hafta Sonu veya Resmi Tatil Sectiniz..."
 
     /**
      * Kahvalti empty dönüyor
@@ -60,7 +59,6 @@ class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         intent?.let {
             date = it.getStringExtra("date")!!
         }
@@ -78,7 +76,6 @@ class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener,
 
         bottomSheet.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(p0: View, p1: Float) {
-
             }
 
             @SuppressLint("SwitchIntDef", "SimpleDateFormat")
@@ -108,17 +105,15 @@ class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener,
                     (month + 1).toString()
                 }
                 date = "$editedDay.$editedMonth.$year"
-                setMenus(baseResponse)
+                setMenus(allType)
                 selectFragment(iconId)
 
             }
         }
     }
 
-    //TODO TopNavigation için animation eklenecek
-
     private fun getDailyMenus() {
-        menuViewModel.menuList.observe(this, Observer { _result ->
+        menuViewModel.allType.observe(this, Observer { _result ->
             when (_result.status) {
                 Status.LOADING -> {
                     //frgMain XML'den invisible yapıldı
@@ -127,7 +122,7 @@ class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener,
                 Status.SUCCESS -> {
 
                     _result.data?.let { _it ->
-                        baseResponse = _it
+                        allType = _it
                         setMenus(_it)
                     }
                     frgMain.show()
@@ -142,12 +137,12 @@ class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener,
         })
     }
 
-    private fun setMenus(baseResponse: BaseResponse) {
+    private fun setMenus(allType: AllType) {
         kahvaltiMenu = findKahvalti()!!
-        ogleMenu = findOgle(baseResponse.ogle, date)!!
-        aksamMenu = findAksam(baseResponse.aksam, date)!!
-        veganMenu = findVegan(baseResponse.vegan, date)!!
-        diyetMenu = findDiyet(baseResponse.diyet, date)!!
+        ogleMenu = findOgle(allType.ogle!!, date)!!
+        aksamMenu = findAksam(allType.aksam!!, date)!!
+        veganMenu = findVegan(allType.vegan!!, date)!!
+        diyetMenu = findDiyet(allType.diyet!!, date)!!
     }
 
     //TODO Takvimden haftasonu seçildiginde  her ögün için mesaj cıkarılıyor -> setMenus()
@@ -158,9 +153,9 @@ class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener,
                 return it
             }
         }
-        Toast.makeText(this, "Hafta Sonu veya Resmi Tatil Sectiniz...", Toast.LENGTH_SHORT)
+        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT)
             .show()
-        return Ogle()
+        return Ogle(menu = errorMessage)
     }
 
     private fun findKahvalti(): Kahvalti? {
@@ -173,9 +168,9 @@ class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener,
                 return it
             }
         }
-        Toast.makeText(this, "Hafta Sonu veya Resmi Tatil Sectiniz...", Toast.LENGTH_SHORT)
+        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT)
             .show()
-        return Aksam()
+        return Aksam(menu = errorMessage)
     }
 
     private fun findDiyet(list: List<Diyet>, selectedDate: String): Diyet? {
@@ -184,9 +179,9 @@ class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener,
                 return it
             }
         }
-        Toast.makeText(this, "Hafta Sonu veya Resmi Tatil Sectiniz...", Toast.LENGTH_SHORT)
+        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT)
             .show()
-        return Diyet()
+        return Diyet(menu = errorMessage)
     }
 
     private fun findVegan(list: List<Vegan>, selectedDate: String): Vegan? {
@@ -195,9 +190,9 @@ class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener,
                 return it
             }
         }
-        Toast.makeText(this, "Hafta Sonu veya Resmi Tatil Sectiniz...", Toast.LENGTH_SHORT)
+        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT)
             .show()
-        return Vegan()
+        return Vegan(menu = errorMessage)
     }
 
     //TODO Ilk acilista(kahvalti) -> date seçiminde _id gelmedigi için else düşüyor

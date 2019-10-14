@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<ProgressBar xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/prgSplash"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:text="Buluruz Bişeyler"
-    android:textSize="48sp" />
+    android:minWidth="108dp"
+    android:minHeight="108dp" />

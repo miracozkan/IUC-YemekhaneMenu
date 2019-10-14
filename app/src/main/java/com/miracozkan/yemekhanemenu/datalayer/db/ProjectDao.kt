@@ -1,7 +1,9 @@
-package com.miracozkan.yemekhanemenu.datalayer.repository
+package com.miracozkan.yemekhanemenu.datalayer.db
 
-import com.miracozkan.yemekhanemenu.base.BaseRepository
-import com.miracozkan.yemekhanemenu.datalayer.db.LocalDataDao
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import com.miracozkan.yemekhanemenu.datalayer.model.AllType
 
 
@@ -11,14 +13,16 @@ import com.miracozkan.yemekhanemenu.datalayer.model.AllType
 //│ ─────────────────────────── │
 //│ mirac.ozkan123@gmail.com    │
 //│ ─────────────────────────── │
-//│ 05.10.2019 - 19:10          │
+//│ 14.10.2019 - 17:09          │
 //└─────────────────────────────┘
 
-class MenuRepository(
-    private val localDataDao: LocalDataDao
-) : BaseRepository() {
+@Dao
+interface ProjectDao {
 
-    suspend fun getAllType(): AllType {
-        return localDataDao.getAllTypeDB()
-    }
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun saveAll(allType: AllType)
+
+    @Query("SELECT COUNT(*) FROM AllType")
+    suspend fun getAllTypeCount(): Int
+
 }

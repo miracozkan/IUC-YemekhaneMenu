@@ -1,7 +1,10 @@
 package com.miracozkan.yemekhanemenu.util
 
+import com.miracozkan.yemekhanemenu.datalayer.db.LocalDataDao
+import com.miracozkan.yemekhanemenu.datalayer.db.ProjectDao
 import com.miracozkan.yemekhanemenu.datalayer.remote.ProjectService
 import com.miracozkan.yemekhanemenu.datalayer.repository.MenuRepository
+import com.miracozkan.yemekhanemenu.datalayer.repository.NetworkCallRepository
 
 
 // Code with ❤
@@ -14,6 +17,11 @@ import com.miracozkan.yemekhanemenu.datalayer.repository.MenuRepository
 //└─────────────────────────────┘
 
 object DependencyUtil {
-    fun getMenuRepository(projectService: ProjectService)
-            : MenuRepository = MenuRepository(projectService)
+    fun getMenuRepository(localDataDao: LocalDataDao)
+            : MenuRepository = MenuRepository(localDataDao)
+
+    fun getNetworkCallRepository(
+        projectService: ProjectService,
+        projectDao: ProjectDao
+    ): NetworkCallRepository = NetworkCallRepository(projectService, projectDao)
 }

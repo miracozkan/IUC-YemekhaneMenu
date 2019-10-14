@@ -3,6 +3,7 @@ package com.miracozkan.yemekhanemenu.ui.fragment
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,8 +34,11 @@ class OgleFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         onDataPass()
-
         txtData.text = date?.menu
+        val a = date?.menu!!.split("\n")
+        a.forEach {
+            Log.e("Ogle Menu", it)
+        }
     }
 
     private fun onDataPass() {

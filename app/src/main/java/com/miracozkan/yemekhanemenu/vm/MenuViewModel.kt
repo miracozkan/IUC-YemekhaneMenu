@@ -2,10 +2,9 @@ package com.miracozkan.yemekhanemenu.vm
 
 import androidx.lifecycle.MutableLiveData
 import com.miracozkan.yemekhanemenu.base.BaseViewModel
-import com.miracozkan.yemekhanemenu.datalayer.model.BaseResponse
+import com.miracozkan.yemekhanemenu.datalayer.model.AllType
 import com.miracozkan.yemekhanemenu.datalayer.repository.MenuRepository
 import com.miracozkan.yemekhanemenu.util.Result
-import com.miracozkan.yemekhanemenu.util.Status
 import kotlinx.coroutines.launch
 
 
@@ -20,26 +19,21 @@ import kotlinx.coroutines.launch
 
 class MenuViewModel(private val menuRepository: MenuRepository) : BaseViewModel() {
 
-    val menuList by lazy { MutableLiveData<Result<BaseResponse>>() }
+    val allType by lazy { MutableLiveData<Result<AllType>>() }
 
     init {
-        getData()
+        getKahvalti()
     }
 
-    private fun getData() {
+    private fun getKahvalti() {
         scope.launch {
-            when (menuRepository.getMenuFromRemote().status) {
-                Status.ERROR -> {
-                    //TODO Error Coduna göre filtrelenebilir
-                    menuList.postValue(Result.error(menuRepository.getMenuFromRemote().message!!))
-                }
-                Status.LOADING -> {
-                    menuList.postValue(Result.loading())
-                }
-                Status.SUCCESS -> {
-                    menuList.postValue(Result.success(menuRepository.getMenuFromRemote().data!!))
-                }
+            allType.postValue(Result.loading())
+            if (menuRepository.getAllType() == null) {
+                allType.postValue(Result.error("List Bos"))
+            } else {
+                allType.postValue(Result.success(menuRepository.getAllType()))
             }
         }
     }
+
 }

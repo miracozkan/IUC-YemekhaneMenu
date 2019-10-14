@@ -6,19 +6,26 @@ import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
+
 // Code with ❤
 //┌─────────────────────────────┐
 //│ Created by Mirac OZKAN      │
 //│ ─────────────────────────── │
 //│ mirac.ozkan123@gmail.com    │
 //│ ─────────────────────────── │
-//│ 07.10.2019 - 15:50          │
+//│ 14.10.2019 - 18:10          │
 //└─────────────────────────────┘
 
 @Parcelize
-@Entity(tableName = "Diyet")
-data class Diyet(
+@Entity(tableName = "AllType")
+data class AllType(
     @PrimaryKey(autoGenerate = true) val _id: Int? = null,
-    @SerializedName("tarih") val tarih: String? = null,
-    @SerializedName("menu") val menu: String? = null
+    @SerializedName("aksam")
+    val aksam: List<Aksam>? = null,
+    @SerializedName("ogle")
+    val ogle: List<Ogle>? = null,
+    @SerializedName("diyet")
+    val diyet: List<Diyet>? = null,
+    @SerializedName("vegan")
+    val vegan: List<Vegan>? = null
 ) : Parcelable

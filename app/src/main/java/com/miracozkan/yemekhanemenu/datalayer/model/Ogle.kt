@@ -1,6 +1,8 @@
 package com.miracozkan.yemekhanemenu.datalayer.model
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
@@ -14,7 +16,9 @@ import kotlinx.android.parcel.Parcelize
 //└─────────────────────────────┘
 
 @Parcelize
+@Entity(tableName = "Ogle")
 data class Ogle(
+    @PrimaryKey(autoGenerate = true) val _id: Int? = null,
     @SerializedName("tarih") val tarih: String? = null,
     @SerializedName("menu") val menu: String? = null
 ) : Parcelable
