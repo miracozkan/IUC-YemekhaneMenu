@@ -27,6 +27,8 @@ android {
     productFlavors {
         dev {
             buildConfigField("String", "FULL_URL", '"https://logiseweb.com/iu/mirac.php?tokenKey=mirac232134"')
+            buildConfigField("String", "GOOGLE_IMAGE_URL", '"https://www.google.com/search?q=kavun&source=lnms&tbm=isch"')
+            buildConfigField("String", "GOOGLE_URL", '"https://www.google.com/search?q="')
             buildConfigField("String", "API_URL", '"https://logiseweb.com/iu/"')
             buildConfigField("String", "API_KEY", '"mirac232134"')
         }
@@ -78,4 +80,11 @@ dependencies {
     implementation "androidx.room:room-runtime:$room"
     implementation "androidx.room:room-ktx:$room"
     kapt "androidx.room:room-compiler:$room"
+
+    //html parse
+    implementation "org.jsoup:jsoup:$jsoup"
+
+    //picasso
+    implementation "com.squareup.picasso:picasso:$picasso"
+
 }

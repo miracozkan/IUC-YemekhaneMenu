@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.fragment_aksam.*
 
 class AksamFragment : Fragment() {
 
-    private var aksamMenu : Aksam? = null
+    private var aksamMenu: Aksam? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +31,9 @@ class AksamFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         txtAksam.text = aksamMenu?.menu
+
     }
+
 
     companion object {
         @JvmStatic

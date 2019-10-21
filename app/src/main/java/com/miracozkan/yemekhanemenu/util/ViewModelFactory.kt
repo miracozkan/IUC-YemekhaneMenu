@@ -3,8 +3,10 @@ package com.miracozkan.yemekhanemenu.util
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.miracozkan.yemekhanemenu.base.BaseRepository
+import com.miracozkan.yemekhanemenu.datalayer.repository.GetImageRepository
 import com.miracozkan.yemekhanemenu.datalayer.repository.MenuRepository
 import com.miracozkan.yemekhanemenu.datalayer.repository.NetworkCallRepository
+import com.miracozkan.yemekhanemenu.vm.GetImageViewModel
 import com.miracozkan.yemekhanemenu.vm.MenuViewModel
 import com.miracozkan.yemekhanemenu.vm.NetworkCallViewModel
 
@@ -27,6 +29,9 @@ class ViewModelFactory(private val repository: BaseRepository) : ViewModelProvid
             }
             modelClass.isAssignableFrom(NetworkCallViewModel::class.java) -> {
                 NetworkCallViewModel(this.repository as NetworkCallRepository) as T
+            }
+            modelClass.isAssignableFrom(GetImageViewModel::class.java) -> {
+                GetImageViewModel(this.repository as GetImageRepository) as T
             }
             else -> throw IllegalArgumentException("ViewModel Not Found")
         }
