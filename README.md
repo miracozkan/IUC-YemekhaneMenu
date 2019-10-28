@@ -1,19 +1,22 @@
 # IUC-YemekhaneMenu
-
-Architecture
-    • MVVM
-    
-Patterns
-    • Repository
-    • Observer
-    
-Used Tech.
-    • Kotlin
-    • Retrofit 2 
-    • Room
-    • Coroutines
-    • Jsoup
-    • LiveData
-    
-Custom Views
-    • Chip Navigation Bar (https://github.com/ismaeldivita/chip-navigation-bar)
+<h4>Architecture</h4>
+<ul>
+<li>MVVM</li>
+</ul>
+<h4>Patterns</h4>
+<ul>
+<li>Repository</li>
+<li>Observer</li>
+</ul>
+<h4>Used Tech.</h4>
+<ul>
+<li>Kotlin</li>
+<li>Retrofit 2</li>
+<li>Room</li>
+<li>Coroutines <br /> Jsoup</li>
+<li>LiveData</li>
+</ul>
+<h4>Custom Views</h4>
+<ul>
+<li>Chip Navigation Bar (<a href="https://github.com/ismaeldivita/chip-navigation-bar">https://github.com/ismaeldivita/chip-navigation-bar)</a></li>
+</ul>
