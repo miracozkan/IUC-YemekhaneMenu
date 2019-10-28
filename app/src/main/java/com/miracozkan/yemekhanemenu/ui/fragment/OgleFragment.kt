@@ -1,26 +1,38 @@
 package com.miracozkan.yemekhanemenu.ui.fragment
 
-
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.miracozkan.yemekhanemenu.R
 import com.miracozkan.yemekhanemenu.datalayer.model.Ogle
+import com.miracozkan.yemekhanemenu.util.printMenu
 import kotlinx.android.synthetic.main.fragment_ogle.*
 
 class OgleFragment : Fragment() {
 
-    private var listener: OnDataPass? = null
-    private var date: Ogle? = null
+    /**
+     * GetImageRepository Service Ile Calıstırılacak
+     */
+
+    private var ogleMenu: Ogle? = null
+
+//    private val getImageRepository by lazy {
+//        DependencyUtil.getImageRepository(list, ProjectDatabase.getInstance(context!!).foodImage())
+//    }
+//
+//    private val getImageViewModel by lazy {
+//        ViewModelProviders.of(
+//            this,
+//            ViewModelFactory(getImageRepository)
+//        ).get(GetImageViewModel::class.java)
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            date = it.getParcelable("date")
+            ogleMenu = it.getParcelable("ogleMenu")
         }
     }
 
@@ -33,45 +45,15 @@ class OgleFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        onDataPass()
-        txtData.text = date?.menu
-        val a = date?.menu!!.split("\n")
-        a.forEach {
-            Log.e("Ogle Menu", it)
-        }
-    }
-
-    private fun onDataPass() {
-        listener?.onDataPass(
-            this.id,
-            this.tag!!
-        )
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnDataPass) {
-            listener = context
-        } else {
-            throw RuntimeException("$context must implement OnFragmentInteractionListener")
-        }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
-    }
-
-    interface OnDataPass {
-        fun onDataPass(int: Int, string: String)
+        txtData.text = ogleMenu?.menu.printMenu()
     }
 
     companion object {
         @JvmStatic
-        fun newInstance(date: Ogle) =
+        fun newInstance(ogleMenu: Ogle) =
             OgleFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelable("date", date)
+                    putParcelable("ogleMenu", ogleMenu)
                 }
             }
     }

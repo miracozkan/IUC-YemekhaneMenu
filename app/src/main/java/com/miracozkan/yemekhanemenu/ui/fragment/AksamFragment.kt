@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.miracozkan.yemekhanemenu.R
 import com.miracozkan.yemekhanemenu.datalayer.model.Aksam
+import com.miracozkan.yemekhanemenu.util.printMenu
 import kotlinx.android.synthetic.main.fragment_aksam.*
 
 class AksamFragment : Fragment() {
@@ -30,10 +31,8 @@ class AksamFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        txtAksam.text = aksamMenu?.menu
-
+        txtAksam.text = aksamMenu?.menu.printMenu()
     }
-
 
     companion object {
         @JvmStatic

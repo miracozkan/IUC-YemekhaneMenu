@@ -23,3 +23,10 @@ fun View.show() {
 fun View.invisible() {
     this.visibility = View.INVISIBLE
 }
+
+fun String?.printMenu(): String {
+    this?.let {
+        return it
+    }
+    return "MENU MEVCUT DEGIL"
+}

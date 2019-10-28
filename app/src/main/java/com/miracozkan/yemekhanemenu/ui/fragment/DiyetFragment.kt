@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.miracozkan.yemekhanemenu.R
 import com.miracozkan.yemekhanemenu.datalayer.model.Diyet
+import com.miracozkan.yemekhanemenu.util.printMenu
 import kotlinx.android.synthetic.main.fragment_diyet.*
 
 class DiyetFragment : Fragment() {
@@ -30,7 +31,7 @@ class DiyetFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        txtDiyet.text = diyetMenu?.menu
+        txtDiyet.text = diyetMenu?.menu.printMenu()
     }
 
     companion object {

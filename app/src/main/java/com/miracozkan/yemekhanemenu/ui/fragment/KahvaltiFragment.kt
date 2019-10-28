@@ -6,15 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.miracozkan.yemekhanemenu.R
+import com.miracozkan.yemekhanemenu.datalayer.model.Kahvalti
+import com.miracozkan.yemekhanemenu.util.printMenu
+import kotlinx.android.synthetic.main.fragment_kahvalti.*
 
 class KahvaltiFragment : Fragment() {
 
-    private var date: String? = null
+    private var kahvaltiMenu: Kahvalti? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            date = it.getString("date")
+            kahvaltiMenu = it.getParcelable("kahvaltiMenu")
         }
     }
 
@@ -29,15 +32,21 @@ class KahvaltiFragment : Fragment() {
         )
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        txtKahvalti.text = kahvaltiMenu?.menu.printMenu()
+
+    }
+
     /**
      * newInstance unused -> kahvaltı empty dönüyor
      */
     companion object {
         @JvmStatic
-        fun newInstance(date: String) =
+        fun newInstance(kahvaltiMenu: Kahvalti) =
             KahvaltiFragment().apply {
                 arguments = Bundle().apply {
-                    putString("date", date)
+                    putParcelable("kahvaltiMenu", kahvaltiMenu)
                 }
             }
     }

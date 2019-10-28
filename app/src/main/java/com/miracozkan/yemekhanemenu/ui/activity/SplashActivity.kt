@@ -61,12 +61,11 @@ class SplashActivity : AppCompatActivity() {
                 }
                 Status.SUCCESS -> {
                     prgSplash.hide()
-                    Toast.makeText(this, _response.data, Toast.LENGTH_SHORT).show()
                     startActivity(intent)
                 }
                 Status.ERROR -> {
                     prgSplash.hide()
-                    Toast.makeText(this, _response.data, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, _response.message, Toast.LENGTH_SHORT).show()
                     startActivity(intent)
                 }
             }

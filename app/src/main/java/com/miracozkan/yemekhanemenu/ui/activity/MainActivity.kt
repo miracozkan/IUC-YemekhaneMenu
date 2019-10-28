@@ -2,7 +2,6 @@ package com.miracozkan.yemekhanemenu.ui.activity
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.CalendarView
 import android.widget.Toast
@@ -20,8 +19,7 @@ import com.miracozkan.yemekhanemenu.vm.MenuViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.bottom_sheet_date.*
 
-class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener,
-    OgleFragment.OnDataPass {
+class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener {
 
     private val menuRepository by lazy {
         DependencyUtil.getMenuRepository(ProjectDatabase.getInstance(this).localDataDao())
@@ -38,13 +36,7 @@ class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener,
     private lateinit var date: String
     private lateinit var allType: AllType
     private var selectedFragment: String = ""
-    private var selectedFragmentId: Int = -1
-    private var iconId: Int = -1
-    private val errorMessage = "Hafta Sonu veya Resmi Tatil Sectiniz..."
-
-    /**
-     * Kahvalti empty dönüyor
-     */
+    private var iconId: Int = R.id.kahvalti
 
     private lateinit var kahvaltiMenu: Kahvalti
     private lateinit var ogleMenu: Ogle
@@ -63,10 +55,8 @@ class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener,
             date = it.getStringExtra("date")!!
         }
 
-        bottomMenu.setItemSelected(R.id.kahvalti)
-        swipeFragment(KahvaltiFragment(), "kahvalti")
-
         getDailyMenus()
+        bottomMenu.setItemSelected(R.id.kahvalti)
 
         bottomMenu.setOnItemSelectedListener { _it ->
             selectFragment(_it)
@@ -98,7 +88,6 @@ class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener,
                 } else {
                     day.toString()
                 }
-
                 val editedMonth: String = if (month + 1 < 10) {
                     "0${month + 1}"
                 } else {
@@ -112,6 +101,10 @@ class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener,
         }
     }
 
+    private fun firstKahvalti() {
+        swipeFragment(KahvaltiFragment.newInstance(kahvaltiMenu), "kahvalti")
+    }
+
     private fun getDailyMenus() {
         menuViewModel.allType.observe(this, Observer { _result ->
             when (_result.status) {
@@ -120,10 +113,10 @@ class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener,
                     prgBar.show()
                 }
                 Status.SUCCESS -> {
-
                     _result.data?.let { _it ->
                         allType = _it
                         setMenus(_it)
+                        firstKahvalti()
                     }
                     frgMain.show()
                     prgBar.hide()
@@ -138,14 +131,12 @@ class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener,
     }
 
     private fun setMenus(allType: AllType) {
-        kahvaltiMenu = findKahvalti()!!
+        kahvaltiMenu = findKahvalti(allType.kahvalti!!, date)!!
         ogleMenu = findOgle(allType.ogle!!, date)!!
         aksamMenu = findAksam(allType.aksam!!, date)!!
         veganMenu = findVegan(allType.vegan!!, date)!!
         diyetMenu = findDiyet(allType.diyet!!, date)!!
     }
-
-    //TODO Takvimden haftasonu seçildiginde  her ögün için mesaj cıkarılıyor -> setMenus()
 
     private fun findOgle(list: List<Ogle>, selectedDate: String): Ogle? {
         list.forEach {
@@ -153,12 +144,15 @@ class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener,
                 return it
             }
         }
-        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT)
-            .show()
-        return Ogle(menu = errorMessage)
+        return Ogle()
     }
 
-    private fun findKahvalti(): Kahvalti? {
+    private fun findKahvalti(list: List<Kahvalti>, selectedDate: String): Kahvalti? {
+        list.forEach {
+            if (it.tarih == selectedDate) {
+                return it
+            }
+        }
         return Kahvalti()
     }
 
@@ -168,9 +162,7 @@ class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener,
                 return it
             }
         }
-        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT)
-            .show()
-        return Aksam(menu = errorMessage)
+        return Aksam()
     }
 
     private fun findDiyet(list: List<Diyet>, selectedDate: String): Diyet? {
@@ -179,9 +171,7 @@ class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener,
                 return it
             }
         }
-        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT)
-            .show()
-        return Diyet(menu = errorMessage)
+        return Diyet()
     }
 
     private fun findVegan(list: List<Vegan>, selectedDate: String): Vegan? {
@@ -190,20 +180,15 @@ class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener,
                 return it
             }
         }
-        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT)
-            .show()
-        return Vegan(menu = errorMessage)
+        return Vegan()
     }
-
-    //TODO Ilk acilista(kahvalti) -> date seçiminde _id gelmedigi için else düşüyor
 
     private fun selectFragment(_id: Int) {
         when (_id) {
             R.id.kahvalti -> {
                 iconId = _id
                 selectedFragment = "kahvalti"
-                swipeFragment(KahvaltiFragment(), selectedFragment)
-
+                swipeFragment(KahvaltiFragment.newInstance(kahvaltiMenu), selectedFragment)
             }
             R.id.ogle -> {
                 iconId = _id
@@ -248,9 +233,4 @@ class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener,
         }
     }
 
-    override fun onDataPass(int: Int, string: String) {
-        selectedFragmentId = int
-        Log.e("Fragment ID ", int.toString())
-        Log.e("Fragment Tag ", string)
-    }
 }
