@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.miracozkan.yemekhanemenu.datalayer.model.AllType
+import com.miracozkan.yemekhanemenu.datalayer.model.FoodImage
 
 
 // Code with ❤
@@ -13,16 +13,16 @@ import com.miracozkan.yemekhanemenu.datalayer.model.AllType
 //│ ─────────────────────────── │
 //│ mirac.ozkan123@gmail.com    │
 //│ ─────────────────────────── │
-//│ 14.10.2019 - 17:09          │
+//│ 15.10.2019 - 21:02          │
 //└─────────────────────────────┘
 
 @Dao
-interface ProjectDao {
+interface FoodImageDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveAll(allType: AllType)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    fun insertFoodImage(foodImage: FoodImage)
 
-    @Query("SELECT COUNT(*) FROM AllType")
-    suspend fun getAllTypeCount(): Int
+    @Query("SELECT * FROM FoodImage WHERE name = :name ")
+    fun getImageFood(name: String): FoodImage
 
 }

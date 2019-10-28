@@ -1,6 +1,11 @@
 package com.miracozkan.yemekhanemenu.datalayer.model
 
+import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
+
 
 // Code with ❤
 //┌─────────────────────────────┐
@@ -8,12 +13,13 @@ import com.google.gson.annotations.SerializedName
 //│ ─────────────────────────── │
 //│ mirac.ozkan123@gmail.com    │
 //│ ─────────────────────────── │
-//│ 07.10.2019 - 15:50          │
+//│ 15.10.2019 - 21:00          │
 //└─────────────────────────────┘
 
-data class Form (
-
-	@SerializedName("type") val type : String,
-	@SerializedName("title") val title : String,
-	@SerializedName("items") val items : List<Items>
-)
+@Parcelize
+@Entity(tableName = "FoodImage")
+data class FoodImage(
+    @PrimaryKey(autoGenerate = true) var _id: Int? = null,
+    @SerializedName("name") val name: String,
+    @SerializedName("link") val link: String
+) : Parcelable

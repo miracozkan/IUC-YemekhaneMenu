@@ -19,22 +19,13 @@ object TypeConverter {
     @androidx.room.TypeConverter
     @JvmStatic
     fun kahvaltiToString(array: List<Kahvalti>): String {
-        if (array.isEmpty()) {
-            return ""
+        return if (array.isEmpty()) {
+            ""
+        } else {
+            Gson().toJson(array)
         }
-        val builder = StringBuilder(array[0].toString())
-        for (i in 1 until array.size) {
-            builder.append(",").append(array[i])
-        }
-        return builder.toString()
     }
 
-    @androidx.room.TypeConverter
-    @JvmStatic
-    fun kahvaltiFromString(value: String): List<Kahvalti> {
-        val listType = object : TypeToken<List<Kahvalti>>() {}.type
-        return Gson().fromJson(value, listType)
-    }
 
     @androidx.room.TypeConverter
     @JvmStatic
@@ -105,4 +96,10 @@ object TypeConverter {
         return Gson().fromJson(value, listType)
     }
 
+    @androidx.room.TypeConverter
+    @JvmStatic
+    fun kahvaltistring(value: String): List<Kahvalti> {
+        val listType = object : TypeToken<List<Kahvalti>>() {}.type
+        return Gson().fromJson(value, listType)
+    }
 }

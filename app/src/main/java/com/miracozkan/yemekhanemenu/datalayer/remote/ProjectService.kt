@@ -1,6 +1,7 @@
 package com.miracozkan.yemekhanemenu.datalayer.remote
 
 import com.miracozkan.yemekhanemenu.datalayer.model.BaseResponse
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -20,4 +21,9 @@ interface ProjectService {
     suspend fun getMenuAsync(
         @Query("tokenKey") siteKey: String
     ): Response<BaseResponse>
+
+    @GET("mirac.php")
+    suspend fun test(
+        @Query("tokenKey") siteKey: String
+    ): Call<BaseResponse>
 }
