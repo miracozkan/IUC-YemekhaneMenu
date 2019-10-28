@@ -27,6 +27,7 @@ class NetworkCallRepository(
 
     //TODO API_KEY ve API_URL NDK ile saklanıp çekilmeli
 
+
     private suspend fun getMenuFromRemote(): Result<BaseResponse> {
         return getResult {
             projectService.getMenuAsync(BuildConfig.API_KEY)
@@ -40,9 +41,12 @@ class NetworkCallRepository(
             }
             Status.SUCCESS -> {
                 Log.e("SaveDataFromRemote", "SaveDataFromRemote")
+                Log.e("Db Count", projectDao.getAllTypeCount().toString())
                 getMenuFromRemote().data?.let { _response ->
                     projectDao.saveAll(
                         AllType(
+                            _id = _response.date,
+                            kahvalti = _response.kahvalti,
                             aksam = _response.aksam,
                             diyet = _response.diyet,
                             ogle = _response.ogle,

@@ -13,14 +13,13 @@ import com.google.gson.annotations.SerializedName
 
 
 data class BaseResponse (
+    @SerializedName("kahvalti") val kahvalti : List<Kahvalti>,
+    @SerializedName("ogle") val ogle : List<Ogle>,
+    @SerializedName("aksam") val aksam : List<Aksam>,
+    @SerializedName("kumanya") val kumanya : List<Kumanya>,
+    @SerializedName("diyet") val diyet : List<Diyet>,
+    @SerializedName("vegan") val vegan : List<Vegan>,
+    @SerializedName("cocuk") val cocuk: List<Cocuk>,
+    @SerializedName("date") val date: Int
 
-	@SerializedName("form") val form : List<Form>,
-	@SerializedName("schema") val schema : Schema,
-	@SerializedName("kahvalti") val kahvalti : List<Kahvalti>,
-	@SerializedName("ogle") val ogle : List<Ogle>,
-	@SerializedName("aksam") val aksam : List<Aksam>,
-	@SerializedName("kumanya") val kumanya : List<Kumanya>,
-	@SerializedName("diyet") val diyet : List<Diyet>,
-	@SerializedName("vegan") val vegan : List<Vegan>,
-	@SerializedName("cocuk") val cocuk : List<Cocuk>
 )

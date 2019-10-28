@@ -21,17 +21,18 @@ import com.miracozkan.yemekhanemenu.datalayer.model.*
     entities = [Kahvalti::class,
         Ogle::class, Aksam::class,
         Vegan::class, Diyet::class,
-        AllType::class],
+        AllType::class, FoodImage::class],
     version = 2,
     exportSchema = false
 )
 @TypeConverters(TypeConverter::class)
 abstract class ProjectDatabase : RoomDatabase() {
 
-
     abstract fun projectDao(): ProjectDao
 
     abstract fun localDataDao(): LocalDataDao
+
+    abstract fun foodImage(): FoodImageDao
 
     companion object {
         @Volatile
@@ -42,7 +43,7 @@ abstract class ProjectDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     ProjectDatabase::class.java,
-                    "tv_series_database"
+                    "yemekhane_db"
                 )
                     .fallbackToDestructiveMigration()
                     .build()

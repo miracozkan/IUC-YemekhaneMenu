@@ -19,6 +19,7 @@ class NetworkCallViewModel(private val networkCallRepository: NetworkCallReposit
     BaseViewModel() {
 
     val resultReq by lazy { MutableLiveData<Result<String>>() }
+    private lateinit var saveDbResult: String
 
     init {
         setMenusData()
@@ -26,15 +27,16 @@ class NetworkCallViewModel(private val networkCallRepository: NetworkCallReposit
 
     private fun setMenusData() {
         scope.launch {
-            when (networkCallRepository.saveDataToDB()) {
+            saveDbResult = networkCallRepository.saveDataToDB()
+            when (saveDbResult) {
                 "Yükleniyor" -> {
                     resultReq.postValue(Result.loading())
                 }
                 "İşlem Tamamlandi" -> {
-                    resultReq.postValue(Result.success(networkCallRepository.saveDataToDB()))
+                    resultReq.postValue(Result.success(saveDbResult))
                 }
                 "İslem Sirasında Hata Olustu" -> {
-                    resultReq.postValue(Result.error(networkCallRepository.saveDataToDB()))
+                    resultReq.postValue(Result.error(saveDbResult))
                 }
             }
         }

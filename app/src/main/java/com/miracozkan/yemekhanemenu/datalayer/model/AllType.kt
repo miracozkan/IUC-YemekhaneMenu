@@ -19,7 +19,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 @Entity(tableName = "AllType")
 data class AllType(
-    @PrimaryKey(autoGenerate = true) val _id: Int? = null,
+    @PrimaryKey val _id: Int? = null,
     @SerializedName("aksam")
     val aksam: List<Aksam>? = null,
     @SerializedName("ogle")
@@ -27,5 +27,7 @@ data class AllType(
     @SerializedName("diyet")
     val diyet: List<Diyet>? = null,
     @SerializedName("vegan")
-    val vegan: List<Vegan>? = null
+    val vegan: List<Vegan>? = null,
+    @SerializedName("kahvalti")
+    val kahvalti: List<Kahvalti>? = null
 ) : Parcelable
