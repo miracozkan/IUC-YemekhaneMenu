@@ -13,7 +13,8 @@
 <li>Kotlin</li>
 <li>Retrofit 2</li>
 <li>Room</li>
-<li>Coroutines <br /> Jsoup</li>
+  <li>Coroutines</li>
+  <li>Jsoup</li>
 <li>LiveData</li>
 </ul>
 <h4>Custom Views</h4>
