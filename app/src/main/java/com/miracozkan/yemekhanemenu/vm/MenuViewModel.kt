@@ -22,10 +22,10 @@ class MenuViewModel(private val menuRepository: MenuRepository) : BaseViewModel(
     val allType by lazy { MutableLiveData<Result<AllType>>() }
 
     init {
-        getKahvalti()
+        getAllType()
     }
 
-    private fun getKahvalti() {
+    private fun getAllType() {
         scope.launch {
             allType.postValue(Result.loading())
             if (menuRepository.getAllType() == null) {

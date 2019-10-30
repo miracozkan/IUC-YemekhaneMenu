@@ -27,7 +27,6 @@ class NetworkCallRepository(
 
     //TODO API_KEY ve API_URL NDK ile saklanıp çekilmeli
 
-
     private suspend fun getMenuFromRemote(): Result<BaseResponse> {
         return getResult {
             projectService.getMenuAsync(BuildConfig.API_KEY)
@@ -61,4 +60,9 @@ class NetworkCallRepository(
             }
         }
     }
+
+    suspend fun getLastUpdateDate(): Int {
+        return projectDao.getLastDate()
+    }
+
 }

@@ -8,4 +8,8 @@
     <string name="vegan">Vegan</string>
     <string name="diyet">Diyet</string>
     <string name="tarih_se_mek_in_yukar_kald_r_n">Tarih Seçmek İçin Yukarı Kaldırın</string>
+
+    <string name="notification_channel_id" translatable="false">Notification Channel</string>
+    <string name="notification_title" translatable="false">Yemek Listesi Güncellendi</string>
+    <string name="yemek_listesl" translatable="false">Yemek Listesi</string>
 </resources>

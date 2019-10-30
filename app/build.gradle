@@ -6,6 +6,8 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
+apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
@@ -84,7 +86,9 @@ dependencies {
     //html parse
     implementation "org.jsoup:jsoup:$jsoup"
 
-    //picasso
-    implementation "com.squareup.picasso:picasso:$picasso"
-
+    //FCM
+    implementation 'com.google.firebase:firebase-core:17.2.1'
+    implementation "com.google.firebase:firebase-iid:$fcm"
+    implementation "com.google.firebase:firebase-messaging:$fcm"
+    implementation 'android.arch.work:work-runtime:1.0.1'
 }

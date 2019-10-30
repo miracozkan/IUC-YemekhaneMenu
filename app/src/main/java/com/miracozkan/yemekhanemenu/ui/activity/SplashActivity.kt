@@ -1,10 +1,14 @@
 package com.miracozkan.yemekhanemenu.ui.activity
 
 import android.annotation.SuppressLint
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -21,7 +25,6 @@ import java.util.*
 class SplashActivity : AppCompatActivity() {
 
     private val DATE_FORMAT_2 = "dd.MM.yyyy"
-
     private val networkCallRepository by lazy {
         DependencyUtil.getNetworkCallRepository(
             RetrofitClient.getClient(),
@@ -37,19 +40,57 @@ class SplashActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("date", getCurrentDate())
+        createChannel(
+            getString(R.string.notification_channel_id),
+            getString(R.string.notification_title)
+        )
 
-        if (checkConnection()) {
-            runObserve(intent)
-        } else {
-            Toast.makeText(this, "Internet Baglantınız Kapalı", Toast.LENGTH_SHORT).show()
-            prgSplash.hide()
-            startActivity(intent)
+        val currentDate = getCurrentDate()
+        val edittedCurrentDate = currentDate.replace(".", "").substring(2)
+
+        val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra("date", currentDate)
+
+        networkCallViewModel.lastUpdate.observe(this, androidx.lifecycle.Observer {
+            if (edittedCurrentDate.toInt() == it) {
+                prgSplash.hide()
+                startActivity(intent)
+            } else {
+                if (checkConnection()) {
+                    runObserve(intent)
+                } else {
+                    Toast.makeText(
+                        this,
+                        "Güncel Liste İcin İnternet Baglantınızı Acınız",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    prgSplash.hide()
+                    startActivity(intent)
+                }
+            }
+        })
+    }
+
+    private fun createChannel(channelId: String, channelName: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationChannel = NotificationChannel(
+                channelId,
+                channelName,
+                NotificationManager.IMPORTANCE_HIGH
+            ).apply {
+                setShowBadge(false)
+            }
+            notificationChannel.enableLights(true)
+            notificationChannel.lightColor = Color.RED
+            notificationChannel.enableVibration(true)
+            notificationChannel.description = "Test"
+            val notificationManager = getSystemService(
+                NotificationManager::class.java
+            )
+            notificationManager!!.createNotificationChannel(notificationChannel)
         }
     }
 

@@ -25,4 +25,7 @@ interface ProjectDao {
     @Query("SELECT COUNT(*) FROM AllType")
     suspend fun getAllTypeCount(): Int
 
+    @Query("SELECT _id FROM AllType ")
+    suspend fun getLastDate(): Int
+
 }

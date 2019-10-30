@@ -19,10 +19,18 @@ class NetworkCallViewModel(private val networkCallRepository: NetworkCallReposit
     BaseViewModel() {
 
     val resultReq by lazy { MutableLiveData<Result<String>>() }
+    val lastUpdate by lazy { MutableLiveData<Int>() }
     private lateinit var saveDbResult: String
 
     init {
         setMenusData()
+        getLastUpdateDate()
+    }
+
+    private fun getLastUpdateDate() {
+        scope.launch {
+            lastUpdate.postValue(networkCallRepository.getLastUpdateDate())
+        }
     }
 
     private fun setMenusData() {
