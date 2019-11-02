@@ -16,6 +16,7 @@
   <li>Coroutines</li>
   <li>Jsoup</li>
 <li>LiveData</li>
+<li>Firebase Cloud Messaging</li>
 </ul>
 <h4>Custom Views</h4>
 <ul>

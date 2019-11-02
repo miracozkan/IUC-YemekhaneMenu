@@ -19,8 +19,8 @@ import com.miracozkan.yemekhanemenu.datalayer.repository.NetworkCallRepository
 //└─────────────────────────────┘
 
 object DependencyUtil {
-    fun getMenuRepository(localDataDao: LocalDataDao)
-            : MenuRepository = MenuRepository(localDataDao)
+    fun getMenuRepository(date: String, localDataDao: LocalDataDao)
+            : MenuRepository = MenuRepository(date, localDataDao)
 
     fun getNetworkCallRepository(
         projectService: ProjectService,

@@ -32,6 +32,6 @@ interface LocalDataDao {
     @androidx.room.Query("SELECT * FROM Vegan")
     suspend fun getVeganMenuFromDB(): List<Vegan>
 
-    @Query("SELECT * FROM AllType")
-    suspend fun getAllTypeDB(): AllType
+    @Query("SELECT * FROM AllType WHERE _id = :date")
+    suspend fun getAllTypeDB(date: Int): AllType
 }

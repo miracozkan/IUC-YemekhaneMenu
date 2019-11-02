@@ -29,7 +29,7 @@ class MenuViewModel(private val menuRepository: MenuRepository) : BaseViewModel(
         scope.launch {
             allType.postValue(Result.loading())
             if (menuRepository.getAllType() == null) {
-                allType.postValue(Result.error("List Bos"))
+                allType.postValue(Result.error("Liste Bos"))
             } else {
                 allType.postValue(Result.success(menuRepository.getAllType()))
             }

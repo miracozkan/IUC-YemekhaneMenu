@@ -21,8 +21,15 @@ import kotlinx.android.synthetic.main.bottom_sheet_date.*
 
 class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener {
 
+    private val edittedDate by lazy {
+        intent.getStringExtra("date")!!.replace(".", "").substring(2)
+    }
+
     private val menuRepository by lazy {
-        DependencyUtil.getMenuRepository(ProjectDatabase.getInstance(this).localDataDao())
+        DependencyUtil.getMenuRepository(
+            edittedDate,
+            ProjectDatabase.getInstance(this).localDataDao()
+        )
     }
 
     private val menuViewModel by lazy {

@@ -15,10 +15,11 @@ import com.miracozkan.yemekhanemenu.datalayer.model.AllType
 //└─────────────────────────────┘
 
 class MenuRepository(
+    private val date: String,
     private val localDataDao: LocalDataDao
 ) : BaseRepository() {
 
     suspend fun getAllType(): AllType {
-        return localDataDao.getAllTypeDB()
+        return localDataDao.getAllTypeDB(date.toInt())
     }
 }
