@@ -20,6 +20,7 @@ import com.miracozkan.yemekhanemenu.vm.NetworkCallViewModel
 //│ 05.10.2019 - 19:09          │
 //└─────────────────────────────┘
 
+@Suppress("UNCHECKED_CAST")
 class ViewModelFactory(private val repository: BaseRepository) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

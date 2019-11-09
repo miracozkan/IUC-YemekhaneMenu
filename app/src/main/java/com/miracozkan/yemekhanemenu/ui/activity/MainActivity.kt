@@ -1,15 +1,12 @@
 package com.miracozkan.yemekhanemenu.ui.activity
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.View
 import android.widget.CalendarView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.miracozkan.yemekhanemenu.R
 import com.miracozkan.yemekhanemenu.datalayer.db.ProjectDatabase
 import com.miracozkan.yemekhanemenu.datalayer.model.*
@@ -19,10 +16,12 @@ import com.miracozkan.yemekhanemenu.vm.MenuViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.bottom_sheet_date.*
 
+
+@Suppress("UNCHECKED_CAST")
 class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener {
 
     private val edittedDate by lazy {
-        intent.getStringExtra("date")!!.replace(".", "").substring(2)
+        intent.getStringExtra("date")!!
     }
 
     private val menuRepository by lazy {
@@ -51,10 +50,6 @@ class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener {
     private lateinit var diyetMenu: Diyet
     private lateinit var veganMenu: Vegan
 
-    private val bottomSheet by lazy {
-        BottomSheetBehavior.from(ltyBottomSheet)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -71,20 +66,6 @@ class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener {
 
         calendarView.setOnDateChangeListener(this)
 
-        bottomSheet.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-            override fun onSlide(p0: View, p1: Float) {
-            }
-
-            @SuppressLint("SwitchIntDef", "SimpleDateFormat")
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                when (newState) {
-                    BottomSheetBehavior.STATE_EXPANDED -> {//Acıldı
-                    }
-                    BottomSheetBehavior.STATE_COLLAPSED -> {//Kapandı
-                    }
-                }
-            }
-        })
     }
 
     override fun onSelectedDayChange(p0: CalendarView, year: Int, month: Int, day: Int) {
@@ -138,56 +119,62 @@ class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener {
     }
 
     private fun setMenus(allType: AllType) {
-        kahvaltiMenu = findKahvalti(allType.kahvalti!!, date)!!
-        ogleMenu = findOgle(allType.ogle!!, date)!!
-        aksamMenu = findAksam(allType.aksam!!, date)!!
-        veganMenu = findVegan(allType.vegan!!, date)!!
-        diyetMenu = findDiyet(allType.diyet!!, date)!!
+        kahvaltiMenu = findMenu(allType.kahvalti!!, date)!!
+        ogleMenu = findMenu(allType.ogle!!, date)!!
+        aksamMenu = findMenu(allType.aksam!!, date)!!
+        veganMenu = findMenu(allType.vegan!!, date)!!
+        diyetMenu = findMenu(allType.diyet!!, date)!!
     }
 
-    private fun findOgle(list: List<Ogle>, selectedDate: String): Ogle? {
-        list.forEach {
-            if (it.tarih == selectedDate) {
-                return it
+    private fun <T> findMenu(list: List<T>, selectedDate: String): T? {
+        when (list[0]) {
+            is Kahvalti -> {
+                list.forEach {
+                    it as Kahvalti
+                    if (it.tarih == selectedDate) {
+                        return it
+                    }
+                }
+                return Kahvalti() as T
             }
-        }
-        return Ogle()
-    }
-
-    private fun findKahvalti(list: List<Kahvalti>, selectedDate: String): Kahvalti? {
-        list.forEach {
-            if (it.tarih == selectedDate) {
-                return it
+            is Aksam -> {
+                list.forEach {
+                    it as Aksam
+                    if (it.tarih == selectedDate) {
+                        return it
+                    }
+                }
+                return Aksam() as T
             }
-        }
-        return Kahvalti()
-    }
-
-    private fun findAksam(list: List<Aksam>, selectedDate: String): Aksam? {
-        list.forEach {
-            if (it.tarih == selectedDate) {
-                return it
+            is Ogle -> {
+                list.forEach {
+                    it as Ogle
+                    if (it.tarih == selectedDate) {
+                        return it
+                    }
+                }
+                return Ogle() as T
             }
-        }
-        return Aksam()
-    }
-
-    private fun findDiyet(list: List<Diyet>, selectedDate: String): Diyet? {
-        list.forEach {
-            if (it.tarih == selectedDate) {
-                return it
+            is Diyet -> {
+                list.forEach {
+                    it as Diyet
+                    if (it.tarih == selectedDate) {
+                        return it
+                    }
+                }
+                return Diyet() as T
             }
-        }
-        return Diyet()
-    }
-
-    private fun findVegan(list: List<Vegan>, selectedDate: String): Vegan? {
-        list.forEach {
-            if (it.tarih == selectedDate) {
-                return it
+            is Vegan -> {
+                list.forEach {
+                    it as Vegan
+                    if (it.tarih == selectedDate) {
+                        return it
+                    }
+                }
+                return Vegan() as T
             }
+            else -> return Kahvalti() as T
         }
-        return Vegan()
     }
 
     private fun selectFragment(_id: Int) {
@@ -239,5 +226,4 @@ class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener {
             super.onBackPressed()
         }
     }
-
 }

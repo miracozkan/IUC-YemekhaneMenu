@@ -45,7 +45,7 @@ class OgleFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        txtData.text = ogleMenu?.menu.printMenu()
+        txtOgle.text = ogleMenu?.menu.printMenu()
     }
 
     companion object {

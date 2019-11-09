@@ -26,7 +26,6 @@ object TypeConverter {
         }
     }
 
-
     @androidx.room.TypeConverter
     @JvmStatic
     fun ogleToString(array: List<Ogle>): String {
@@ -66,7 +65,6 @@ object TypeConverter {
             Gson().toJson(array)
         }
     }
-
 
     @androidx.room.TypeConverter
     @JvmStatic

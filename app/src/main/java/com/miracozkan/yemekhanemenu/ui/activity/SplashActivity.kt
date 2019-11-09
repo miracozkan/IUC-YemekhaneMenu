@@ -25,8 +25,12 @@ import java.util.*
 class SplashActivity : AppCompatActivity() {
 
     private val DATE_FORMAT_2 = "dd.MM.yyyy"
+
+    private val edittedCurrentDate by lazy { getCurrentDate().replace(".", "").substring(2) }
+
     private val networkCallRepository by lazy {
         DependencyUtil.getNetworkCallRepository(
+            edittedCurrentDate.toInt(),
             RetrofitClient.getClient(),
             ProjectDatabase.getInstance(this).projectDao()
         )
@@ -48,11 +52,8 @@ class SplashActivity : AppCompatActivity() {
             getString(R.string.notification_title)
         )
 
-        val currentDate = getCurrentDate()
-        val edittedCurrentDate = currentDate.replace(".", "").substring(2)
-
         val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("date", currentDate)
+        intent.putExtra("date", edittedCurrentDate)
 
         networkCallViewModel.lastUpdate.observe(this, androidx.lifecycle.Observer {
             if (edittedCurrentDate.toInt() == it) {

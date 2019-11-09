@@ -12,7 +12,7 @@
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
     app:layout_constraintCircleRadius="24dp">
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/btmSheetName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

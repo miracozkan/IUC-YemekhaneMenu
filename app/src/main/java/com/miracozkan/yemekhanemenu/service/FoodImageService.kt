@@ -60,7 +60,6 @@ class FoodImageService : IntentService("GoogleParse") {
     }
 
     private fun publishResult(result: Int) {
-
         val intent = Intent("com.miracozkan.yemekhanemenu.service.FoodImageService")
         intent.putExtra("RESULT", result)
         sendBroadcast(intent)

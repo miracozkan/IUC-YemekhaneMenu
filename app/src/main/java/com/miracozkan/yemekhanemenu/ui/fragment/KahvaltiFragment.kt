@@ -38,9 +38,6 @@ class KahvaltiFragment : Fragment() {
 
     }
 
-    /**
-     * newInstance unused -> kahvaltı empty dönüyor
-     */
     companion object {
         @JvmStatic
         fun newInstance(kahvaltiMenu: Kahvalti) =

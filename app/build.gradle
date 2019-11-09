@@ -6,7 +6,7 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
-apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 29
@@ -31,6 +31,10 @@ android {
             buildConfigField("String", "FULL_URL", '"https://logiseweb.com/iu/mirac.php?tokenKey=mirac232134"')
             buildConfigField("String", "GOOGLE_IMAGE_URL", '"https://www.google.com/search?q=kavun&source=lnms&tbm=isch"')
             buildConfigField("String", "GOOGLE_URL", '"https://www.google.com/search?q="')
+            buildConfigField("String", "API_URL", '"https://logiseweb.com/iu/"')
+            buildConfigField("String", "API_KEY", '"mirac232134"')
+        }
+        prod {
             buildConfigField("String", "API_URL", '"https://logiseweb.com/iu/"')
             buildConfigField("String", "API_KEY", '"mirac232134"')
         }

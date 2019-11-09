@@ -1,6 +1,5 @@
 package com.miracozkan.yemekhanemenu.datalayer.repository
 
-import android.util.Log
 import com.miracozkan.yemekhanemenu.BuildConfig
 import com.miracozkan.yemekhanemenu.base.BaseRepository
 import com.miracozkan.yemekhanemenu.datalayer.db.ProjectDao
@@ -21,6 +20,7 @@ import com.miracozkan.yemekhanemenu.util.Status
 //└─────────────────────────────┘
 
 class NetworkCallRepository(
+    private val date: Int,
     private val projectService: ProjectService,
     private val projectDao: ProjectDao
 ) : BaseRepository() {
@@ -39,8 +39,6 @@ class NetworkCallRepository(
                 "Yükleniyor"
             }
             Status.SUCCESS -> {
-                Log.e("SaveDataFromRemote", "SaveDataFromRemote")
-                Log.e("Db Count", projectDao.getAllTypeCount().toString())
                 getMenuFromRemote().data?.let { _response ->
                     projectDao.saveAll(
                         AllType(
@@ -62,7 +60,6 @@ class NetworkCallRepository(
     }
 
     suspend fun getLastUpdateDate(): Int {
-        return projectDao.getLastDate()
+        return projectDao.getLastDate(date)
     }
-
 }

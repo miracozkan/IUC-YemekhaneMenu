@@ -23,9 +23,10 @@ object DependencyUtil {
             : MenuRepository = MenuRepository(date, localDataDao)
 
     fun getNetworkCallRepository(
+        date: Int,
         projectService: ProjectService,
         projectDao: ProjectDao
-    ): NetworkCallRepository = NetworkCallRepository(projectService, projectDao)
+    ): NetworkCallRepository = NetworkCallRepository(date, projectService, projectDao)
 
     fun getImageRepository(text: List<String>, foodImageDao: FoodImageDao): GetImageRepository =
         GetImageRepository(text, foodImageDao)
