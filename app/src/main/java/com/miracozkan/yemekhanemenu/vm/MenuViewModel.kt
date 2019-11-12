@@ -31,7 +31,7 @@ class MenuViewModel(private val menuRepository: MenuRepository) : BaseViewModel(
             if (menuRepository.getAllType() == null) {
                 allType.postValue(Result.error("Liste Bos"))
             } else {
-                allType.postValue(Result.success(menuRepository.getAllType()))
+                allType.postValue(Result.success(menuRepository.getAllType()!!))
             }
         }
     }

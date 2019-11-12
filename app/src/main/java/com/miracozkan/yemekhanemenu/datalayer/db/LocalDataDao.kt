@@ -33,5 +33,5 @@ interface LocalDataDao {
     suspend fun getVeganMenuFromDB(): List<Vegan>
 
     @Query("SELECT * FROM AllType WHERE _id = :date")
-    suspend fun getAllTypeDB(date: Int): AllType
+    suspend fun getAllTypeDB(date: Int): AllType?
 }

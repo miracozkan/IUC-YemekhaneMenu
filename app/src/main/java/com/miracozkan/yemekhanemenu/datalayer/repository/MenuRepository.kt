@@ -19,7 +19,7 @@ class MenuRepository(
     private val localDataDao: LocalDataDao
 ) : BaseRepository() {
 
-    suspend fun getAllType(): AllType {
+    suspend fun getAllType(): AllType? {
         return localDataDao.getAllTypeDB(date.toInt())
     }
 }

@@ -52,8 +52,11 @@ class SplashActivity : AppCompatActivity() {
             getString(R.string.notification_title)
         )
 
+        val currentDate = getCurrentDate()
+        val edittedCurrentDate = currentDate.replace(".", "").substring(2)
+
         val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("date", edittedCurrentDate)
+        intent.putExtra("date", currentDate)
 
         networkCallViewModel.lastUpdate.observe(this, androidx.lifecycle.Observer {
             if (edittedCurrentDate.toInt() == it) {

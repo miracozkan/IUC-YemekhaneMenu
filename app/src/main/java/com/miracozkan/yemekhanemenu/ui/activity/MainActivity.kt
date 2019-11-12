@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.bottom_sheet_date.*
 class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener {
 
     private val edittedDate by lazy {
-        intent.getStringExtra("date")!!
+        intent.getStringExtra("date")!!.replace(".", "").substring(2)
     }
 
     private val menuRepository by lazy {
@@ -56,7 +56,6 @@ class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener {
         intent?.let {
             date = it.getStringExtra("date")!!
         }
-
         getDailyMenus()
         bottomMenu.setItemSelected(R.id.kahvalti)
 
@@ -84,7 +83,6 @@ class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener {
                 date = "$editedDay.$editedMonth.$year"
                 setMenus(allType)
                 selectFragment(iconId)
-
             }
         }
     }
@@ -97,7 +95,6 @@ class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener {
         menuViewModel.allType.observe(this, Observer { _result ->
             when (_result.status) {
                 Status.LOADING -> {
-                    //frgMain XML'den invisible yapıldı
                     prgBar.show()
                 }
                 Status.SUCCESS -> {
@@ -119,14 +116,14 @@ class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener {
     }
 
     private fun setMenus(allType: AllType) {
-        kahvaltiMenu = findMenu(allType.kahvalti!!, date)!!
-        ogleMenu = findMenu(allType.ogle!!, date)!!
-        aksamMenu = findMenu(allType.aksam!!, date)!!
-        veganMenu = findMenu(allType.vegan!!, date)!!
-        diyetMenu = findMenu(allType.diyet!!, date)!!
+        kahvaltiMenu = findMenu(allType.kahvalti!!, date)
+        ogleMenu = findMenu(allType.ogle!!, date)
+        aksamMenu = findMenu(allType.aksam!!, date)
+        veganMenu = findMenu(allType.vegan!!, date)
+        diyetMenu = findMenu(allType.diyet!!, date)
     }
 
-    private fun <T> findMenu(list: List<T>, selectedDate: String): T? {
+    private fun <T> findMenu(list: List<T>, selectedDate: String): T {
         when (list[0]) {
             is Kahvalti -> {
                 list.forEach {
