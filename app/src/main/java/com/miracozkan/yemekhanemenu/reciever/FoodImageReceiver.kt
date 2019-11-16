@@ -25,10 +25,12 @@ class FoodImageReceiver : BroadcastReceiver() {
     override fun onReceive(p0: Context?, p1: Intent?) {
 
         val bundle = p1?.extras
-        val resultCode = bundle?.getInt("RESULT")
+        val resultCode = bundle?.getInt(RESULT_PARAM)
         bundle?.let {
             if (resultCode == RESULT_OK) {
                 Toast.makeText(p0, "Download Finish", Toast.LENGTH_SHORT).show()
+                // Get texts from resource file. If you don't have context in the class,
+                // you can pass resource id to TextViews like txtState.setText(R.string.download_done)
                 txtState?.text = "Download Done!!!"
                 Log.e("FoodImageReciever", "if -> Something WentWrongg")
 
@@ -37,5 +39,9 @@ class FoodImageReceiver : BroadcastReceiver() {
                 Log.e("FoodImageReciever", "else -> Something WentWrongg")
             }
         }
+    }
+
+    companion object {
+        const val RESULT_PARAM = "RESULT"
     }
 }

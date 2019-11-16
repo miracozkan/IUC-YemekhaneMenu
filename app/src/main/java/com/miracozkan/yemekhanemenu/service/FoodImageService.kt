@@ -9,6 +9,7 @@ import com.google.gson.JsonParser
 import com.miracozkan.yemekhanemenu.BuildConfig
 import com.miracozkan.yemekhanemenu.datalayer.db.ProjectDatabase
 import com.miracozkan.yemekhanemenu.datalayer.model.FoodImage
+import com.miracozkan.yemekhanemenu.reciever.FoodImageReceiver.Companion.RESULT_PARAM
 import org.jsoup.Jsoup
 
 // Code with ❤
@@ -60,9 +61,11 @@ class FoodImageService : IntentService("GoogleParse") {
     }
 
     private fun publishResult(result: Int) {
+        // I haven't use this logic before but this name should be constant and there should be
+        // better way to do this. Should do some research about it. I'd be appreciated if you let me know
+        // when you find a better way.
         val intent = Intent("com.miracozkan.yemekhanemenu.service.FoodImageService")
-        intent.putExtra("RESULT", result)
+        intent.putExtra(RESULT_PARAM, result)
         sendBroadcast(intent)
-
     }
 }

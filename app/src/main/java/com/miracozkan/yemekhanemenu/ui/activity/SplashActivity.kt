@@ -16,18 +16,17 @@ import androidx.lifecycle.ViewModelProviders
 import com.miracozkan.yemekhanemenu.R
 import com.miracozkan.yemekhanemenu.datalayer.db.ProjectDatabase
 import com.miracozkan.yemekhanemenu.datalayer.remote.RetrofitClient
+import com.miracozkan.yemekhanemenu.ui.activity.MainActivity.Companion.DATE_PARAM
 import com.miracozkan.yemekhanemenu.util.*
 import com.miracozkan.yemekhanemenu.vm.NetworkCallViewModel
 import kotlinx.android.synthetic.main.activity_splash.*
 import java.text.SimpleDateFormat
+import java.time.ZoneId
 import java.util.*
 
 
 // Why do you use splash activity?
 // You can use splash fragment, so you can properly use Single Activity Multiple Fragment architecture
-// Also you should use navigation graph, it is easier to handle navigate between fragment
-// Example = findNavController.navigate(CurrentFragmentDirections.actionTargetFragment())
-// And also sending parameter is really easy.
 class SplashActivity : AppCompatActivity() {
 
     private val edittedCurrentDate by lazy { getCurrentDate().replace(".", "").substring(2) }
@@ -60,7 +59,7 @@ class SplashActivity : AppCompatActivity() {
         val edittedCurrentDate = currentDate.replace(".", "").substring(2)
 
         val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("date", currentDate)
+        intent.putExtra(DATE_PARAM, currentDate)
 
         networkCallViewModel.lastUpdate.observe(this, androidx.lifecycle.Observer {
             if (edittedCurrentDate.toInt() == it) {
@@ -83,6 +82,10 @@ class SplashActivity : AppCompatActivity() {
         })
     }
 
+    // Creating channel is not activity class's work. Should do it in a different class
+    // Like NotificationBuilder
+    // Always ask yourself, Is doing X, class Y's task, or not.
+    // For example, Is creating notification channel activity class'es task?
     private fun createChannel(channelId: String, channelName: String) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel = NotificationChannel(
