@@ -33,6 +33,10 @@ class GetImageRepository(
     }
 
     fun getLink() {
+        // Don't use global scope. it is hard to handle on stop states.
+        // For example when user leaves app, it keeps working.
+        // And don't request stuff in Repository.
+        // It is not repository's job to send network request
         GlobalScope.launch {
             text.forEach { _name ->
                 val link = "${BuildConfig.GOOGLE_URL}$_name&source=lnms&tbm=isch"

@@ -22,9 +22,13 @@ import kotlinx.android.synthetic.main.activity_splash.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class SplashActivity : AppCompatActivity() {
 
-    private val DATE_FORMAT_2 = "dd.MM.yyyy"
+// Why do you use splash activity?
+// You can use splash fragment, so you can properly use Single Activity Multiple Fragment architecture
+// Also you should use navigation graph, it is easier to handle navigate between fragment
+// Example = findNavController.navigate(CurrentFragmentDirections.actionTargetFragment())
+// And also sending parameter is really easy.
+class SplashActivity : AppCompatActivity() {
 
     private val edittedCurrentDate by lazy { getCurrentDate().replace(".", "").substring(2) }
 
@@ -66,6 +70,7 @@ class SplashActivity : AppCompatActivity() {
                 if (checkConnection()) {
                     runObserve(intent)
                 } else {
+                    // Use string resource file all the time.
                     Toast.makeText(
                         this,
                         "Güncel Liste İcin İnternet Baglantınızı Acınız",
@@ -130,5 +135,12 @@ class SplashActivity : AppCompatActivity() {
         dateFormat.timeZone = TimeZone.getTimeZone("UTC")
         val today = Calendar.getInstance().time
         return dateFormat.format(today)
+    }
+
+    companion object {
+        // Use constants in companion object like this.
+        // Also this shouldn't be here. It is not activity's job to handle this formatting stuff.
+        // You should create new class for this. Like DateUtils..
+        private const val DATE_FORMAT_2 = "dd.MM.yyyy"
     }
 }
