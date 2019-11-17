@@ -1,6 +1,7 @@
 package com.miracozkan.yemekhanemenu.vm
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.miracozkan.yemekhanemenu.base.BaseViewModel
 import com.miracozkan.yemekhanemenu.datalayer.repository.GetImageRepository
 import kotlinx.coroutines.launch
@@ -20,17 +21,19 @@ class GetImageViewModel(private val getImageRepository: GetImageRepository) : Ba
     val imageLinks by lazy { MutableLiveData<List<String>>() }
 
     init {
+        // In big projects, usually it is better to call functions manually instead of
+        // calling them in init scope. It will be easier to refactor and do changes.
         getLinks()
     }
 
     fun getImageList() {
-        scope.launch {
+        viewModelScope.launch {
             getImageRepository.getLink()
         }
     }
 
     private fun getLinks() {
-        scope.launch {
+        viewModelScope.launch {
             imageLinks.postValue(getImageRepository.links)
         }
     }

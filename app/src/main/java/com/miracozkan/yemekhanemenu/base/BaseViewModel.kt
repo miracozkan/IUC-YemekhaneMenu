@@ -1,11 +1,6 @@
 package com.miracozkan.yemekhanemenu.base
 
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
-import kotlin.coroutines.CoroutineContext
 
 
 // Code with ❤
@@ -17,14 +12,6 @@ import kotlin.coroutines.CoroutineContext
 //│ 05.10.2019 - 19:07          │
 //└─────────────────────────────┘
 
-abstract class BaseViewModel : ViewModel() {
-
-    private val job = Job()
-    private val coroutineContext: CoroutineContext get() = job + Dispatchers.Main
-    val scope = CoroutineScope(coroutineContext)
-
-    override fun onCleared() {
-        super.onCleared()
-        coroutineContext.cancel()
-    }
-}
+abstract class BaseViewModel : ViewModel()
+// I removed job logic. They've updated view model.
+// viewModelScope ( which I use in view models) handles automatically what we do here.

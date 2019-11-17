@@ -1,5 +1,8 @@
 package com.miracozkan.yemekhanemenu.ui.activity
 
+// Do not use wildcart imports.
+// you can change them in Preferences -> Editor -> Code Style -> Kotlin -> Imports - Use single line
+// If you add "as XYZ" you can call this component as XYZ in your code instead of its xml name.
 import android.os.Bundle
 import android.widget.CalendarView
 import android.widget.Toast
@@ -16,12 +19,13 @@ import com.miracozkan.yemekhanemenu.vm.MenuViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.bottom_sheet_date.*
 
-
+// This is like pulling grenade pin for runtime exception. Try not to use this and fix the warning.
+// Especially for runtime errors.
 @Suppress("UNCHECKED_CAST")
 class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener {
 
     private val edittedDate by lazy {
-        intent.getStringExtra("date")!!.replace(".", "").substring(2)
+        intent.getStringExtra(DATE_PARAM)!!.replace(".", "").substring(2)
     }
 
     private val menuRepository by lazy {
@@ -207,6 +211,10 @@ class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener {
         }
     }
 
+    // You should use navigation graph, it is easier to handle navigate between fragment
+    // Example = findNavController.navigate(CurrentFragmentDirections.actionTargetFragment())
+    // Instead of calling method below.
+    // And also sending data is really easy.
     private fun swipeFragment(fragment: Fragment, tag: String) {
         supportFragmentManager
             .beginTransaction()
@@ -222,5 +230,10 @@ class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener {
         } else {
             super.onBackPressed()
         }
+    }
+
+    companion object {
+        // Always create const variables for params.
+        const val DATE_PARAM = "date"
     }
 }

@@ -1,6 +1,7 @@
 package com.miracozkan.yemekhanemenu.vm
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.miracozkan.yemekhanemenu.base.BaseViewModel
 import com.miracozkan.yemekhanemenu.datalayer.model.AllType
 import com.miracozkan.yemekhanemenu.datalayer.repository.MenuRepository
@@ -26,7 +27,7 @@ class MenuViewModel(private val menuRepository: MenuRepository) : BaseViewModel(
     }
 
     private fun getAllType() {
-        scope.launch {
+        viewModelScope.launch {
             allType.postValue(Result.loading())
             if (menuRepository.getAllType() == null) {
                 allType.postValue(Result.error("Liste Bos"))
