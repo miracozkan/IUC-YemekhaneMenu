@@ -5,7 +5,12 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.miracozkan.yemekhanemenu.datalayer.model.*
+import com.miracozkan.yemekhanemenu.datalayer.model.Aksam
+import com.miracozkan.yemekhanemenu.datalayer.model.AllType
+import com.miracozkan.yemekhanemenu.datalayer.model.Diyet
+import com.miracozkan.yemekhanemenu.datalayer.model.Kahvalti
+import com.miracozkan.yemekhanemenu.datalayer.model.Ogle
+import com.miracozkan.yemekhanemenu.datalayer.model.Vegan
 
 
 // Code with ❤
@@ -21,8 +26,8 @@ import com.miracozkan.yemekhanemenu.datalayer.model.*
     entities = [Kahvalti::class,
         Ogle::class, Aksam::class,
         Vegan::class, Diyet::class,
-        AllType::class, FoodImage::class],
-    version = 2,
+        AllType::class],
+    version = 3,
     exportSchema = false
 )
 @TypeConverters(TypeConverter::class)
@@ -31,8 +36,6 @@ abstract class ProjectDatabase : RoomDatabase() {
     abstract fun projectDao(): ProjectDao
 
     abstract fun localDataDao(): LocalDataDao
-
-    abstract fun foodImage(): FoodImageDao
 
     companion object {
         @Volatile

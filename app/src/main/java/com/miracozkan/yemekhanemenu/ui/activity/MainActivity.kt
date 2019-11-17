@@ -1,8 +1,5 @@
 package com.miracozkan.yemekhanemenu.ui.activity
 
-// Do not use wildcart imports.
-// you can change them in Preferences -> Editor -> Code Style -> Kotlin -> Imports - Use single line
-// If you add "as XYZ" you can call this component as XYZ in your code instead of its xml name.
 import android.os.Bundle
 import android.widget.CalendarView
 import android.widget.Toast
@@ -12,16 +9,26 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.miracozkan.yemekhanemenu.R
 import com.miracozkan.yemekhanemenu.datalayer.db.ProjectDatabase
-import com.miracozkan.yemekhanemenu.datalayer.model.*
-import com.miracozkan.yemekhanemenu.ui.fragment.*
-import com.miracozkan.yemekhanemenu.util.*
+import com.miracozkan.yemekhanemenu.datalayer.model.Aksam
+import com.miracozkan.yemekhanemenu.datalayer.model.AllType
+import com.miracozkan.yemekhanemenu.datalayer.model.Diyet
+import com.miracozkan.yemekhanemenu.datalayer.model.Kahvalti
+import com.miracozkan.yemekhanemenu.datalayer.model.Ogle
+import com.miracozkan.yemekhanemenu.datalayer.model.Vegan
+import com.miracozkan.yemekhanemenu.ui.fragment.AksamFragment
+import com.miracozkan.yemekhanemenu.ui.fragment.DiyetFragment
+import com.miracozkan.yemekhanemenu.ui.fragment.KahvaltiFragment
+import com.miracozkan.yemekhanemenu.ui.fragment.OgleFragment
+import com.miracozkan.yemekhanemenu.ui.fragment.VeganFragment
+import com.miracozkan.yemekhanemenu.util.DependencyUtil
+import com.miracozkan.yemekhanemenu.util.Status
+import com.miracozkan.yemekhanemenu.util.ViewModelFactory
+import com.miracozkan.yemekhanemenu.util.hide
+import com.miracozkan.yemekhanemenu.util.show
 import com.miracozkan.yemekhanemenu.vm.MenuViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.bottom_sheet_date.*
 
-// This is like pulling grenade pin for runtime exception. Try not to use this and fix the warning.
-// Especially for runtime errors.
-@Suppress("UNCHECKED_CAST")
 class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener {
 
     private val edittedDate by lazy {
@@ -211,10 +218,6 @@ class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener {
         }
     }
 
-    // You should use navigation graph, it is easier to handle navigate between fragment
-    // Example = findNavController.navigate(CurrentFragmentDirections.actionTargetFragment())
-    // Instead of calling method below.
-    // And also sending data is really easy.
     private fun swipeFragment(fragment: Fragment, tag: String) {
         supportFragmentManager
             .beginTransaction()
@@ -233,7 +236,6 @@ class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener {
     }
 
     companion object {
-        // Always create const variables for params.
         const val DATE_PARAM = "date"
     }
 }
