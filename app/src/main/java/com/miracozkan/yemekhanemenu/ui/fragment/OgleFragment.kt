@@ -12,22 +12,7 @@ import kotlinx.android.synthetic.main.fragment_ogle.*
 
 class OgleFragment : Fragment() {
 
-    /**
-     * GetImageRepository Service Ile Calıstırılacak
-     */
-
     private var ogleMenu: Ogle? = null
-
-//    private val getImageRepository by lazy {
-//        DependencyUtil.getImageRepository(list, ProjectDatabase.getInstance(context!!).foodImage())
-//    }
-//
-//    private val getImageViewModel by lazy {
-//        ViewModelProviders.of(
-//            this,
-//            ViewModelFactory(getImageRepository)
-//        ).get(GetImageViewModel::class.java)
-//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

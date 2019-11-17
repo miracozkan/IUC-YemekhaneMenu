@@ -1,6 +1,4 @@
-package com.miracozkan.yemekhanemenu.base
-
-import androidx.lifecycle.ViewModel
+package com.miracozkan.yemekhanemenu.util
 
 
 // Code with ❤
@@ -9,7 +7,11 @@ import androidx.lifecycle.ViewModel
 //│ ─────────────────────────── │
 //│ mirac.ozkan123@gmail.com    │
 //│ ─────────────────────────── │
-//│ 05.10.2019 - 19:07          │
+//│ 17.11.2019 - 20:41          │
 //└─────────────────────────────┘
 
-abstract class BaseViewModel : ViewModel()
+class Utils {
+    companion object {
+        const val DATE_FORMAT = "dd.MM.yyyy"
+    }
+}

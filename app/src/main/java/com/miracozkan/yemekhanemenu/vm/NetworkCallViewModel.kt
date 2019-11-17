@@ -27,6 +27,7 @@ class NetworkCallViewModel(private val networkCallRepository: NetworkCallReposit
     // It will return and does nothing.
     private var setMenusDataJob: Job? = null
     private var getLastUpdateJob: Job? = null
+
     val resultReq by lazy { MutableLiveData<Result<String>>() }
     val lastUpdate by lazy { MutableLiveData<Int>() }
     private lateinit var saveDbResult: String
@@ -36,7 +37,7 @@ class NetworkCallViewModel(private val networkCallRepository: NetworkCallReposit
         getLastUpdateDate()
     }
 
-    fun getLastUpdateDate() {
+    private fun getLastUpdateDate() {
         if (getLastUpdateJob?.isActive == true) {
             return
         }
@@ -49,7 +50,7 @@ class NetworkCallViewModel(private val networkCallRepository: NetworkCallReposit
         }
     }
 
-    fun setMenusData() {
+    private fun setMenusData() {
         if (setMenusDataJob?.isActive == true) {
             return
         }

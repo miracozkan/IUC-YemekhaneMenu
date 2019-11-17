@@ -1,10 +1,8 @@
 package com.miracozkan.yemekhanemenu.util
 
-import com.miracozkan.yemekhanemenu.datalayer.db.FoodImageDao
 import com.miracozkan.yemekhanemenu.datalayer.db.LocalDataDao
 import com.miracozkan.yemekhanemenu.datalayer.db.ProjectDao
 import com.miracozkan.yemekhanemenu.datalayer.remote.ProjectService
-import com.miracozkan.yemekhanemenu.datalayer.repository.GetImageRepository
 import com.miracozkan.yemekhanemenu.datalayer.repository.MenuRepository
 import com.miracozkan.yemekhanemenu.datalayer.repository.NetworkCallRepository
 
@@ -28,6 +26,4 @@ object DependencyUtil {
         projectDao: ProjectDao
     ): NetworkCallRepository = NetworkCallRepository(date, projectService, projectDao)
 
-    fun getImageRepository(text: List<String>, foodImageDao: FoodImageDao): GetImageRepository =
-        GetImageRepository(text, foodImageDao)
 }

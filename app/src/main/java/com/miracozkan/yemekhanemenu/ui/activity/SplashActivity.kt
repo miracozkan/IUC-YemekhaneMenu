@@ -1,14 +1,10 @@
 package com.miracozkan.yemekhanemenu.ui.activity
 
 import android.annotation.SuppressLint
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
-import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -18,15 +14,15 @@ import com.miracozkan.yemekhanemenu.datalayer.db.ProjectDatabase
 import com.miracozkan.yemekhanemenu.datalayer.remote.RetrofitClient
 import com.miracozkan.yemekhanemenu.ui.activity.MainActivity.Companion.DATE_PARAM
 import com.miracozkan.yemekhanemenu.util.*
+import com.miracozkan.yemekhanemenu.util.Utils.Companion.DATE_FORMAT
 import com.miracozkan.yemekhanemenu.vm.NetworkCallViewModel
 import kotlinx.android.synthetic.main.activity_splash.*
 import java.text.SimpleDateFormat
-import java.time.ZoneId
 import java.util.*
 
 
-// Why do you use splash activity?
-// You can use splash fragment, so you can properly use Single Activity Multiple Fragment architecture
+//TODO SingleActivity
+
 class SplashActivity : AppCompatActivity() {
 
     private val edittedCurrentDate by lazy { getCurrentDate().replace(".", "").substring(2) }
@@ -50,10 +46,7 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        createChannel(
-            getString(R.string.notification_channel_id),
-            getString(R.string.notification_title)
-        )
+        createChannel()
 
         val currentDate = getCurrentDate()
         val edittedCurrentDate = currentDate.replace(".", "").substring(2)
@@ -82,28 +75,12 @@ class SplashActivity : AppCompatActivity() {
         })
     }
 
-    // Creating channel is not activity class's work. Should do it in a different class
-    // Like NotificationBuilder
-    // Always ask yourself, Is doing X, class Y's task, or not.
-    // For example, Is creating notification channel activity class'es task?
-    private fun createChannel(channelId: String, channelName: String) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationChannel = NotificationChannel(
-                channelId,
-                channelName,
-                NotificationManager.IMPORTANCE_HIGH
-            ).apply {
-                setShowBadge(false)
-            }
-            notificationChannel.enableLights(true)
-            notificationChannel.lightColor = Color.RED
-            notificationChannel.enableVibration(true)
-            notificationChannel.description = "Test"
-            val notificationManager = getSystemService(
-                NotificationManager::class.java
-            )
-            notificationManager!!.createNotificationChannel(notificationChannel)
-        }
+    private fun createChannel() {
+        NotificationBuilder().createChannel(
+            getString(R.string.notification_channel_id),
+            getString(R.string.notification_title),
+            applicationContext
+        )
     }
 
     private fun runObserve(intent: Intent) {
@@ -134,16 +111,10 @@ class SplashActivity : AppCompatActivity() {
 
     @SuppressLint("SimpleDateFormat")
     private fun getCurrentDate(): String {
-        val dateFormat = SimpleDateFormat(DATE_FORMAT_2)
+        val dateFormat = SimpleDateFormat(DATE_FORMAT)
         dateFormat.timeZone = TimeZone.getTimeZone("UTC")
         val today = Calendar.getInstance().time
         return dateFormat.format(today)
     }
 
-    companion object {
-        // Use constants in companion object like this.
-        // Also this shouldn't be here. It is not activity's job to handle this formatting stuff.
-        // You should create new class for this. Like DateUtils..
-        private const val DATE_FORMAT_2 = "dd.MM.yyyy"
-    }
 }
