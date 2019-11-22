@@ -3,30 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/kahvalti"
+        android:id="@+id/kahvaltiFragment"
         android:icon="@drawable/kahvalti"
         android:title="@string/kahvalt"
         app:cnb_iconColor="@color/kahvalti" />
 
     <item
-        android:id="@+id/ogle"
+        android:id="@+id/ogleFragment"
         android:icon="@drawable/ic_ogle"
         android:title="@string/ogle"
         app:cnb_iconColor="@color/ogle" />
 
     <item
-        android:id="@+id/aksam"
+        android:id="@+id/aksamFragment"
         android:icon="@drawable/ic_aksam"
         android:title="@string/aksam"
         app:cnb_iconColor="@color/aksam" />
 
     <item
-        android:id="@+id/vegan"
+        android:id="@+id/veganFragment"
         android:icon="@drawable/ic_vegan"
         android:title="@string/vegan"
         app:cnb_iconColor="@color/vegan" />
     <item
-        android:id="@+id/diyet"
+        android:id="@+id/diyetFragment"
         android:icon="@drawable/ic_diet"
         android:title="@string/diyet"
         app:cnb_iconColor="@color/diyet" />

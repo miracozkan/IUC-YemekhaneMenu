@@ -1,4 +1,6 @@
-package com.miracozkan.yemekhanemenu.util
+package com.miracozkan.yemekhanemenu.base
+
+import androidx.appcompat.app.AppCompatActivity
 
 
 // Code with ❤
@@ -7,12 +9,7 @@ package com.miracozkan.yemekhanemenu.util
 //│ ─────────────────────────── │
 //│ mirac.ozkan123@gmail.com    │
 //│ ─────────────────────────── │
-//│ 17.11.2019 - 20:41          │
+//│ 19.11.2019 - 19:04          │
 //└─────────────────────────────┘
 
-class Utils {
-    companion object {
-        const val DATE_FORMAT = "dd.MM.yyyy"
-        const val DATE_PARAM = "date"
-    }
-}
+open class BaseActivity : AppCompatActivity()

@@ -1,13 +1,15 @@
 package com.miracozkan.yemekhanemenu.ui.activity
 
 import android.os.Bundle
+import android.view.View
 import android.widget.CalendarView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.miracozkan.yemekhanemenu.R
+import com.miracozkan.yemekhanemenu.base.BaseActivity
 import com.miracozkan.yemekhanemenu.datalayer.db.ProjectDatabase
 import com.miracozkan.yemekhanemenu.datalayer.model.Aksam
 import com.miracozkan.yemekhanemenu.datalayer.model.AllType
@@ -22,14 +24,16 @@ import com.miracozkan.yemekhanemenu.ui.fragment.OgleFragment
 import com.miracozkan.yemekhanemenu.ui.fragment.VeganFragment
 import com.miracozkan.yemekhanemenu.util.DependencyUtil
 import com.miracozkan.yemekhanemenu.util.Status
+import com.miracozkan.yemekhanemenu.util.Utils.Companion.DATE_PARAM
 import com.miracozkan.yemekhanemenu.util.ViewModelFactory
 import com.miracozkan.yemekhanemenu.util.hide
 import com.miracozkan.yemekhanemenu.util.show
 import com.miracozkan.yemekhanemenu.vm.MenuViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.bottom_sheet_date.*
+import kotlinx.android.synthetic.main.floating_action_button_for_main_activiy.*
 
-class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener {
+class MainActivity : BaseActivity(), CalendarView.OnDateChangeListener, View.OnClickListener {
 
     private val edittedDate by lazy {
         intent.getStringExtra(DATE_PARAM)!!.replace(".", "").substring(2)
@@ -49,11 +53,15 @@ class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener {
         ).get(MenuViewModel::class.java)
     }
 
+    private val bottomSheet by lazy {
+        BottomSheetBehavior.from(ltyBottomSheet)
+    }
+
     private var counter = 0
     private lateinit var date: String
     private lateinit var allType: AllType
     private var selectedFragment: String = ""
-    private var iconId: Int = R.id.kahvalti
+    private var iconId: Int = R.id.ogleFragment
 
     private lateinit var kahvaltiMenu: Kahvalti
     private lateinit var ogleMenu: Ogle
@@ -65,14 +73,31 @@ class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         intent?.let {
-            date = it.getStringExtra("date")!!
+            date = it.getStringExtra(DATE_PARAM)!!
         }
         getDailyMenus()
-        bottomMenu.setItemSelected(R.id.kahvalti)
+        bottomMenu.setItemSelected(R.id.ogleFragment)
 
         bottomMenu.setOnItemSelectedListener { _it ->
             selectFragment(_it)
         }
+
+        mainActivityFloatingActBar.hide()
+        mainActivityFloatingActBar.setOnClickListener(this)
+
+        bottomSheet
+            .setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+                override fun onSlide(p0: View, p1: Float) {
+                }
+
+                override fun onStateChanged(p0: View, p1: Int) {
+                    when (p1) {
+                        BottomSheetBehavior.STATE_HIDDEN -> {
+                            mainActivityFloatingActBar.show()
+                        }
+                    }
+                }
+            })
 
         calendarView.setOnDateChangeListener(this)
 
@@ -98,28 +123,28 @@ class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener {
         }
     }
 
-    private fun firstKahvalti() {
-        swipeFragment(KahvaltiFragment.newInstance(kahvaltiMenu), "kahvalti")
+    private fun firstOgle() {
+        swipeFragment(OgleFragment.newInstance(ogleMenu), "ogle")
     }
 
     private fun getDailyMenus() {
         menuViewModel.allType.observe(this, Observer { _result ->
             when (_result.status) {
                 Status.LOADING -> {
-                    prgBar.show()
+                    mainActivityProgressBar.show()
                 }
                 Status.SUCCESS -> {
                     _result.data?.let { _it ->
                         allType = _it
                         setMenus(_it)
-                        firstKahvalti()
+                        firstOgle()
                     }
                     frgMain.show()
-                    prgBar.hide()
+                    mainActivityProgressBar.hide()
                 }
                 Status.ERROR -> {
                     frgMain.show()
-                    prgBar.hide()
+                    mainActivityProgressBar.hide()
                     Toast.makeText(this, _result.message, Toast.LENGTH_SHORT).show()
                 }
             }
@@ -187,27 +212,27 @@ class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener {
 
     private fun selectFragment(_id: Int) {
         when (_id) {
-            R.id.kahvalti -> {
+            R.id.kahvaltiFragment -> {
                 iconId = _id
                 selectedFragment = "kahvalti"
                 swipeFragment(KahvaltiFragment.newInstance(kahvaltiMenu), selectedFragment)
             }
-            R.id.ogle -> {
+            R.id.ogleFragment -> {
                 iconId = _id
                 selectedFragment = "ogle"
                 swipeFragment(OgleFragment.newInstance(ogleMenu), selectedFragment)
             }
-            R.id.aksam -> {
+            R.id.aksamFragment -> {
                 iconId = _id
                 selectedFragment = "aksam"
                 swipeFragment(AksamFragment.newInstance(aksamMenu), selectedFragment)
             }
-            R.id.diyet -> {
+            R.id.diyetFragment -> {
                 iconId = _id
                 selectedFragment = "diyet"
                 swipeFragment(DiyetFragment.newInstance(diyetMenu), selectedFragment)
             }
-            R.id.vegan -> {
+            R.id.veganFragment -> {
                 iconId = _id
                 selectedFragment = "vegan"
                 swipeFragment(VeganFragment.newInstance(veganMenu), selectedFragment)
@@ -235,7 +260,12 @@ class MainActivity : AppCompatActivity(), CalendarView.OnDateChangeListener {
         }
     }
 
-    companion object {
-        const val DATE_PARAM = "date"
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.mainActivityFloatingActBar -> {
+                bottomSheet.state = BottomSheetBehavior.STATE_COLLAPSED
+                mainActivityFloatingActBar.hide()
+            }
+        }
     }
 }

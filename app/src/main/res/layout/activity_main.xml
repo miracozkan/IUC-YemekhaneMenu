@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.activity.MainActivity">
 
-<!--    Try to use dimens.xml instead of static attrs, like elevation="16dp"    -->
+    <!--    Try to use dimens.xml instead of static attrs, like elevation="16dp"    -->
     <com.ismaeldivita.chipnavigation.ChipNavigationBar
         android:id="@+id/bottomMenu"
         android:layout_width="match_parent"
@@ -29,14 +29,10 @@
         android:layout_gravity="center"
         android:visibility="invisible" />
 
-    <!-- Do not afraid of using long component names.
-    This should be something like; mainLoadingProgressBar
-    Since we started to use synth import, it is hard to understand which component it is.
-    Also you can make it shorter in import section.
-    For example when you import this component in kt file you can change its name.
-    I wrote a comment in MainActivity import section.-->
+    <include layout="@layout/floating_action_button_for_main_activiy" />
+
     <ProgressBar
-        android:id="@+id/prgBar"
+        android:id="@+id/mainActivityProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center" />

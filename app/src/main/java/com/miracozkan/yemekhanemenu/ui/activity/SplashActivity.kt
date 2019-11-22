@@ -1,20 +1,24 @@
 package com.miracozkan.yemekhanemenu.ui.activity
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Bundle
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.miracozkan.yemekhanemenu.R
+import com.miracozkan.yemekhanemenu.base.BaseActivity
 import com.miracozkan.yemekhanemenu.datalayer.db.ProjectDatabase
 import com.miracozkan.yemekhanemenu.datalayer.remote.RetrofitClient
-import com.miracozkan.yemekhanemenu.ui.activity.MainActivity.Companion.DATE_PARAM
-import com.miracozkan.yemekhanemenu.util.*
+import com.miracozkan.yemekhanemenu.util.DependencyUtil
+import com.miracozkan.yemekhanemenu.util.NotificationBuilder
+import com.miracozkan.yemekhanemenu.util.Status
 import com.miracozkan.yemekhanemenu.util.Utils.Companion.DATE_FORMAT
+import com.miracozkan.yemekhanemenu.util.Utils.Companion.DATE_PARAM
+import com.miracozkan.yemekhanemenu.util.ViewModelFactory
+import com.miracozkan.yemekhanemenu.util.hide
+import com.miracozkan.yemekhanemenu.util.show
 import com.miracozkan.yemekhanemenu.vm.NetworkCallViewModel
 import kotlinx.android.synthetic.main.activity_splash.*
 import java.text.SimpleDateFormat
@@ -23,7 +27,7 @@ import java.util.*
 
 //TODO SingleActivity
 
-class SplashActivity : AppCompatActivity() {
+class SplashActivity : BaseActivity() {
 
     private val edittedCurrentDate by lazy { getCurrentDate().replace(".", "").substring(2) }
 
@@ -62,11 +66,8 @@ class SplashActivity : AppCompatActivity() {
                 if (checkConnection()) {
                     runObserve(intent)
                 } else {
-                    // Use string resource file all the time.
                     Toast.makeText(
-                        this,
-                        "Güncel Liste İcin İnternet Baglantınızı Acınız",
-                        Toast.LENGTH_SHORT
+                        this, getString(R.string.guncel_liste_yok), Toast.LENGTH_SHORT
                     ).show()
                     prgSplash.hide()
                     startActivity(intent)
@@ -109,7 +110,6 @@ class SplashActivity : AppCompatActivity() {
         return activeNetwork?.isConnectedOrConnecting == true
     }
 
-    @SuppressLint("SimpleDateFormat")
     private fun getCurrentDate(): String {
         val dateFormat = SimpleDateFormat(DATE_FORMAT)
         dateFormat.timeZone = TimeZone.getTimeZone("UTC")
