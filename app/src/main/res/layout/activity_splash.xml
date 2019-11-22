@@ -5,5 +5,5 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:minWidth="108dp"
-    android:minHeight="108dp" />
+    android:minWidth="@dimen/splash_act_progress_min_value"
+    android:minHeight="@dimen/splash_act_progress_min_value" />

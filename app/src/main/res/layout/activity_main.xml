@@ -7,17 +7,16 @@
     android:layout_height="match_parent"
     tools:context=".ui.activity.MainActivity">
 
-    <!--    Try to use dimens.xml instead of static attrs, like elevation="16dp"    -->
     <com.ismaeldivita.chipnavigation.ChipNavigationBar
         android:id="@+id/bottomMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
         android:background="@android:color/white"
-        android:elevation="16dp"
-        android:minHeight="56dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
+        android:elevation="@dimen/nav_bar_elevation"
+        android:minHeight="@dimen/nav_bar_min_height"
+        android:paddingTop="@dimen/standart_padding"
+        android:paddingBottom="@dimen/standart_padding"
         app:cnb_addBottomInset="true"
         app:cnb_menuResource="@menu/menu"
         app:cnb_orientationMode="horizontal" />

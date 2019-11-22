@@ -4,13 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.miracozkan.yemekhanemenu.R
+import com.miracozkan.yemekhanemenu.base.BaseFragment
 import com.miracozkan.yemekhanemenu.datalayer.model.Ogle
 import com.miracozkan.yemekhanemenu.util.printMenu
 import kotlinx.android.synthetic.main.fragment_ogle.*
 
-class OgleFragment : Fragment() {
+class OgleFragment : BaseFragment() {
 
     private var ogleMenu: Ogle? = null
 

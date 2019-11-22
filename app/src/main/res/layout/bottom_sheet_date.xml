@@ -8,37 +8,37 @@
     android:background="@android:color/white"
     android:orientation="vertical"
     app:behavior_hideable="true"
-    app:behavior_peekHeight="48dp"
+    app:behavior_peekHeight="@dimen/bottom_sheet_peek_height"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-    app:layout_constraintCircleRadius="24dp">
+    app:layout_constraintCircleRadius="@dimen/bottom_sheet_radius">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/btmSheetName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="@dimen/bottom_sheet_text_margin_start_end"
+        android:layout_marginEnd="@dimen/bottom_sheet_text_margin_start_end"
+        android:layout_marginBottom="@dimen/bottom_sheet_text_margin_bottom"
         android:background="@drawable/rounded_bottom_sheet"
         android:gravity="center"
-        android:paddingBottom="12dp"
+        android:paddingBottom="@dimen/bottom_sheet_text_padding_bottom"
         android:text="@string/tarih_se_mek_in_yukar_kald_r_n"
         android:textColor="@android:color/black"
-        android:textSize="24sp" />
+        android:textSize="@dimen/bottom_sheet_text_size" />
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="4dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
+        android:layout_height="@dimen/bottom_sheet_text_margin_start_end"
+        android:layout_marginTop="@dimen/bottom_sheet_text_margin_start_end"
+        android:layout_marginBottom="@dimen/bottom_sheet_text_margin_start_end"
         android:background="@android:color/darker_gray"
-        android:padding="8dp" />
+        android:padding="@dimen/bottom_sheet_text_padding_bottom" />
 
     <CalendarView
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="@dimen/bottom_sheet_text_padding_bottom" />
 
 </LinearLayout>
 
