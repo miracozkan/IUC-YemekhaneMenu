@@ -13,7 +13,9 @@ import com.miracozkan.yemekhanemenu.datalayer.db.ProjectDatabase
 import com.miracozkan.yemekhanemenu.datalayer.remote.RetrofitClient
 import com.miracozkan.yemekhanemenu.util.DependencyUtil
 import com.miracozkan.yemekhanemenu.util.NotificationBuilder
-import com.miracozkan.yemekhanemenu.util.Status
+import com.miracozkan.yemekhanemenu.util.Status.ERROR
+import com.miracozkan.yemekhanemenu.util.Status.LOADING
+import com.miracozkan.yemekhanemenu.util.Status.SUCCESS
 import com.miracozkan.yemekhanemenu.util.Utils.Companion.DATE_FORMAT
 import com.miracozkan.yemekhanemenu.util.Utils.Companion.DATE_PARAM
 import com.miracozkan.yemekhanemenu.util.ViewModelFactory
@@ -52,25 +54,44 @@ class SplashActivity : BaseActivity() {
 
         createChannel()
 
-        val currentDate = getCurrentDate()
-        val edittedCurrentDate = currentDate.replace(".", "").substring(2)
-
         val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra(DATE_PARAM, currentDate)
+        intent.putExtra(DATE_PARAM, getCurrentDate())
+        runChecker(intent)
 
-        networkCallViewModel.lastUpdate.observe(this, androidx.lifecycle.Observer {
-            if (edittedCurrentDate.toInt() == it) {
-                prgSplash.hide()
-                startActivity(intent)
-            } else {
-                if (checkConnection()) {
-                    runObserve(intent)
-                } else {
-                    Toast.makeText(
-                        this, getString(R.string.guncel_liste_yok), Toast.LENGTH_SHORT
-                    ).show()
+    }
+
+    private fun runChecker(intent: Intent) {
+        networkCallViewModel.lastMenu.observe(this, androidx.lifecycle.Observer {
+            when (it.status) {
+                SUCCESS -> {
+                    if (edittedCurrentDate.toInt() == it.data?._id) {
+                        if (it.data.ogle.isNullOrEmpty()
+                            || it.data.ogle.first().menu == ""
+                            || it.data.ogle.first().menu == " "
+                        ) {
+                            runObserve(intent)
+                        }
+                        prgSplash.hide()
+                        startActivity(intent)
+                    } else {
+                        if (checkConnection()) {
+                            runObserve(intent)
+                        } else {
+                            Toast.makeText(
+                                this, getString(R.string.guncel_liste_yok), Toast.LENGTH_SHORT
+                            ).show()
+                            prgSplash.hide()
+                            startActivity(intent)
+                        }
+                    }
+                }
+                ERROR -> {
                     prgSplash.hide()
+                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
                     startActivity(intent)
+                }
+                LOADING -> {
+                    prgSplash.show()
                 }
             }
         })
@@ -87,14 +108,14 @@ class SplashActivity : BaseActivity() {
     private fun runObserve(intent: Intent) {
         networkCallViewModel.resultReq.observe(this, androidx.lifecycle.Observer { _response ->
             when (_response.status) {
-                Status.LOADING -> {
+                LOADING -> {
                     prgSplash.show()
                 }
-                Status.SUCCESS -> {
+                SUCCESS -> {
                     prgSplash.hide()
                     startActivity(intent)
                 }
-                Status.ERROR -> {
+                ERROR -> {
                     prgSplash.hide()
                     Toast.makeText(this, _response.message, Toast.LENGTH_SHORT).show()
                     startActivity(intent)

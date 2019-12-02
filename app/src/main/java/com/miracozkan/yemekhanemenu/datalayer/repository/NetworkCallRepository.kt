@@ -60,4 +60,8 @@ class NetworkCallRepository(
     suspend fun getLastUpdateDate(): Int {
         return projectDao.getLastDate(date)
     }
+
+    suspend fun getLastMenu(): AllType? {
+        return projectDao.getLastMenu(date)
+    }
 }

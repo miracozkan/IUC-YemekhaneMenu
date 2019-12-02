@@ -3,6 +3,7 @@ package com.miracozkan.yemekhanemenu.vm
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.miracozkan.yemekhanemenu.base.BaseViewModel
+import com.miracozkan.yemekhanemenu.datalayer.model.AllType
 import com.miracozkan.yemekhanemenu.datalayer.repository.NetworkCallRepository
 import com.miracozkan.yemekhanemenu.util.Result
 import kotlinx.coroutines.Dispatchers
@@ -27,14 +28,17 @@ class NetworkCallViewModel(private val networkCallRepository: NetworkCallReposit
     // It will return and does nothing.
     private var setMenusDataJob: Job? = null
     private var getLastUpdateJob: Job? = null
+    private var getLastMenuJob: Job? = null
 
     val resultReq by lazy { MutableLiveData<Result<String>>() }
     val lastUpdate by lazy { MutableLiveData<Int>() }
+    val lastMenu by lazy { MutableLiveData<Result<AllType>>() }
     private lateinit var saveDbResult: String
 
     init {
-        setMenusData()
         getLastUpdateDate()
+        getLastMenu()
+        setMenusData()
     }
 
     private fun getLastUpdateDate() {
@@ -47,6 +51,25 @@ class NetworkCallViewModel(private val networkCallRepository: NetworkCallReposit
     private fun launchGetLastUpdateDate(): Job? {
         return viewModelScope.launch(Dispatchers.IO) {
             lastUpdate.postValue(networkCallRepository.getLastUpdateDate())
+        }
+    }
+
+    private fun getLastMenu() {
+        if (getLastMenuJob?.isActive == true) {
+            return
+        }
+        getLastMenuJob = launchLastMenu()
+    }
+
+    private fun launchLastMenu(): Job {
+        return viewModelScope.launch(Dispatchers.IO) {
+            lastMenu.postValue(Result.loading())
+            val result = networkCallRepository.getLastMenu()
+            if (result != null) {
+                lastMenu.postValue(Result.success(result))
+            } else {
+                lastMenu.postValue(Result.error("Database Error!!!"))
+            }
         }
     }
 

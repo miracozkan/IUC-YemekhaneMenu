@@ -28,4 +28,8 @@ interface ProjectDao {
     @Query("SELECT _id FROM AllType WHERE _id = :date ")
     suspend fun getLastDate(date: Int): Int
 
+    @Query("SELECT * FROM AllType WHERE _id = :date ")
+    suspend fun getLastMenu(date: Int): AllType
+
+
 }
