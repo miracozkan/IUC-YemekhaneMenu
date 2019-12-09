@@ -97,10 +97,12 @@ class MainActivity : BaseActivity(), CalendarView.OnDateChangeListener, View.OnC
         })
 
         calendarView.setOnDateChangeListener(this)
-        runObserver()
+
+        runViewObserver()
     }
 
-    private fun runObserver() {
+    private fun runViewObserver() {
+
         menuViewModel.isFltActionBtnShow.observe(this, Observer {
             if (it) {
                 mainActivityFloatingActBar.show()
@@ -174,6 +176,7 @@ class MainActivity : BaseActivity(), CalendarView.OnDateChangeListener, View.OnC
     }
 
     private fun firstOgle() {
+        menuViewModel.updateSelectedIcon(R.id.ogleFragment)
         swipeFragment(OgleFragment.newInstance(ogleMenu), "ogle")
     }
 
