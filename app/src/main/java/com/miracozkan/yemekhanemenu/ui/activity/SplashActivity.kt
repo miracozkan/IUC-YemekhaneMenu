@@ -26,9 +26,6 @@ import kotlinx.android.synthetic.main.activity_splash.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-
-//TODO SingleActivity
-
 class SplashActivity : BaseActivity() {
 
     private val edittedCurrentDate by lazy { getCurrentDate().replace(".", "").substring(2) }
@@ -71,7 +68,7 @@ class SplashActivity : BaseActivity() {
                         ) {
                             runObserve(intent)
                         }
-                        prgSplash.hide()
+                        networkCallViewModel.updateIsLoadingState(false)
                         startActivity(intent)
                     } else {
                         if (checkConnection()) {
@@ -86,12 +83,12 @@ class SplashActivity : BaseActivity() {
                     }
                 }
                 ERROR -> {
-                    prgSplash.hide()
+                    networkCallViewModel.updateIsLoadingState(false)
                     Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
                     startActivity(intent)
                 }
                 LOADING -> {
-                    prgSplash.show()
+                    networkCallViewModel.updateIsLoadingState(true)
                 }
             }
         })
@@ -109,17 +106,25 @@ class SplashActivity : BaseActivity() {
         networkCallViewModel.resultReq.observe(this, androidx.lifecycle.Observer { _response ->
             when (_response.status) {
                 LOADING -> {
-                    prgSplash.show()
+                    networkCallViewModel.updateIsLoadingState(true)
                 }
                 SUCCESS -> {
-                    prgSplash.hide()
+                    networkCallViewModel.updateIsLoadingState(false)
                     startActivity(intent)
                 }
                 ERROR -> {
-                    prgSplash.hide()
+                    networkCallViewModel.updateIsLoadingState(false)
                     Toast.makeText(this, _response.message, Toast.LENGTH_SHORT).show()
                     startActivity(intent)
                 }
+            }
+        })
+
+        networkCallViewModel.isLoading.observe(this, androidx.lifecycle.Observer {
+            if (it) {
+                prgSplash.show()
+            } else {
+                prgSplash.hide()
             }
         })
     }

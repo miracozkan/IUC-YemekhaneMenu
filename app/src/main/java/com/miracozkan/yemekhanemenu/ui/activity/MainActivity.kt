@@ -76,30 +76,80 @@ class MainActivity : BaseActivity(), CalendarView.OnDateChangeListener, View.OnC
             date = it.getStringExtra(DATE_PARAM)!!
         }
         getDailyMenus()
-        bottomMenu.setItemSelected(R.id.ogleFragment)
 
         bottomMenu.setOnItemSelectedListener { _it ->
-            selectFragment(_it)
+            menuViewModel.updateSelectedFragment(_it)
         }
 
-        mainActivityFloatingActBar.hide()
         mainActivityFloatingActBar.setOnClickListener(this)
 
-        bottomSheet
-            .setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-                override fun onSlide(p0: View, p1: Float) {
-                }
+        bottomSheet.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onSlide(p0: View, p1: Float) {
+            }
 
-                override fun onStateChanged(p0: View, p1: Int) {
-                    when (p1) {
-                        BottomSheetBehavior.STATE_HIDDEN -> {
-                            mainActivityFloatingActBar.show()
-                        }
+            override fun onStateChanged(p0: View, p1: Int) {
+                when (p1) {
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                        menuViewModel.updateFltActionBtnState(true)
                     }
                 }
-            })
+            }
+        })
 
         calendarView.setOnDateChangeListener(this)
+        runObserver()
+    }
+
+    private fun runObserver() {
+        menuViewModel.isFltActionBtnShow.observe(this, Observer {
+            if (it) {
+                mainActivityFloatingActBar.show()
+            } else {
+                mainActivityFloatingActBar.hide()
+            }
+        })
+
+        menuViewModel.isProgressBarShow.observe(this, Observer {
+            if (it) {
+                mainActivityProgressBar.show()
+            } else {
+                mainActivityProgressBar.hide()
+            }
+        })
+
+        menuViewModel.selectedFragment.observe(this, Observer { _id ->
+            iconId = _id
+            menuViewModel.updateSelectedIcon(_id)
+            when (_id) {
+                R.id.kahvaltiFragment -> {
+                    selectedFragment = "kahvalti"
+                    swipeFragment(KahvaltiFragment.newInstance(kahvaltiMenu), selectedFragment)
+                }
+                R.id.ogleFragment -> {
+                    selectedFragment = "ogle"
+                    swipeFragment(OgleFragment.newInstance(ogleMenu), selectedFragment)
+                }
+                R.id.aksamFragment -> {
+                    selectedFragment = "aksam"
+                    swipeFragment(AksamFragment.newInstance(aksamMenu), selectedFragment)
+                }
+                R.id.diyetFragment -> {
+                    selectedFragment = "diyet"
+                    swipeFragment(DiyetFragment.newInstance(diyetMenu), selectedFragment)
+                }
+                R.id.veganFragment -> {
+                    selectedFragment = "vegan"
+                    swipeFragment(VeganFragment.newInstance(veganMenu), selectedFragment)
+                }
+                else -> {
+                    Toast.makeText(this, "Wrong Selection", Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+
+        menuViewModel.selectedIcon.observe(this, Observer {
+            bottomMenu.setItemSelected(it)
+        })
 
     }
 
@@ -118,7 +168,7 @@ class MainActivity : BaseActivity(), CalendarView.OnDateChangeListener, View.OnC
                 }
                 date = "$editedDay.$editedMonth.$year"
                 setMenus(allType)
-                selectFragment(iconId)
+                menuViewModel.updateSelectedFragment(iconId)
             }
         }
     }
@@ -131,7 +181,7 @@ class MainActivity : BaseActivity(), CalendarView.OnDateChangeListener, View.OnC
         menuViewModel.allType.observe(this, Observer { _result ->
             when (_result.status) {
                 Status.LOADING -> {
-                    mainActivityProgressBar.show()
+                    menuViewModel.updatePrgBarState(true)
                 }
                 Status.SUCCESS -> {
                     _result.data?.let { _it ->
@@ -140,11 +190,11 @@ class MainActivity : BaseActivity(), CalendarView.OnDateChangeListener, View.OnC
                         firstOgle()
                     }
                     frgMain.show()
-                    mainActivityProgressBar.hide()
+                    menuViewModel.updatePrgBarState(false)
                 }
                 Status.ERROR -> {
                     frgMain.show()
-                    mainActivityProgressBar.hide()
+                    menuViewModel.updatePrgBarState(false)
                     Toast.makeText(this, _result.message, Toast.LENGTH_SHORT).show()
                 }
             }
@@ -210,39 +260,6 @@ class MainActivity : BaseActivity(), CalendarView.OnDateChangeListener, View.OnC
         }
     }
 
-    private fun selectFragment(_id: Int) {
-        when (_id) {
-            R.id.kahvaltiFragment -> {
-                iconId = _id
-                selectedFragment = "kahvalti"
-                swipeFragment(KahvaltiFragment.newInstance(kahvaltiMenu), selectedFragment)
-            }
-            R.id.ogleFragment -> {
-                iconId = _id
-                selectedFragment = "ogle"
-                swipeFragment(OgleFragment.newInstance(ogleMenu), selectedFragment)
-            }
-            R.id.aksamFragment -> {
-                iconId = _id
-                selectedFragment = "aksam"
-                swipeFragment(AksamFragment.newInstance(aksamMenu), selectedFragment)
-            }
-            R.id.diyetFragment -> {
-                iconId = _id
-                selectedFragment = "diyet"
-                swipeFragment(DiyetFragment.newInstance(diyetMenu), selectedFragment)
-            }
-            R.id.veganFragment -> {
-                iconId = _id
-                selectedFragment = "vegan"
-                swipeFragment(VeganFragment.newInstance(veganMenu), selectedFragment)
-            }
-            else -> {
-                Toast.makeText(this, "Wrong Selection", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
     private fun swipeFragment(fragment: Fragment, tag: String) {
         supportFragmentManager
             .beginTransaction()
@@ -264,7 +281,7 @@ class MainActivity : BaseActivity(), CalendarView.OnDateChangeListener, View.OnC
         when (v?.id) {
             R.id.mainActivityFloatingActBar -> {
                 bottomSheet.state = BottomSheetBehavior.STATE_COLLAPSED
-                mainActivityFloatingActBar.hide()
+                menuViewModel.updateFltActionBtnState(false)
             }
         }
     }

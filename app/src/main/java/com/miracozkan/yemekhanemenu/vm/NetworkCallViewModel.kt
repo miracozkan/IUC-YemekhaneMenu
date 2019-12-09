@@ -1,5 +1,6 @@
 package com.miracozkan.yemekhanemenu.vm
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.miracozkan.yemekhanemenu.base.BaseViewModel
@@ -22,23 +23,27 @@ import kotlinx.coroutines.launch
 class NetworkCallViewModel(private val networkCallRepository: NetworkCallRepository) :
     BaseViewModel() {
 
-    // I suggest you to use this job logic so you can avoid from unnecessary requests.
-    // It is really useful actions like clicking buttons.
-    // Doesn't matter how many times user clicked button if Job is active.
-    // It will return and does nothing.
+    private val _isLoading by lazy { MutableLiveData<Boolean>() }
+    var isLoading: LiveData<Boolean> = _isLoading
+
     private var setMenusDataJob: Job? = null
     private var getLastUpdateJob: Job? = null
     private var getLastMenuJob: Job? = null
 
     val resultReq by lazy { MutableLiveData<Result<String>>() }
-    val lastUpdate by lazy { MutableLiveData<Int>() }
+    private val lastUpdate by lazy { MutableLiveData<Int>() }
     val lastMenu by lazy { MutableLiveData<Result<AllType>>() }
     private lateinit var saveDbResult: String
 
     init {
+        _isLoading.postValue(false)
         getLastUpdateDate()
         getLastMenu()
         setMenusData()
+    }
+
+    fun updateIsLoadingState(state: Boolean) {
+        _isLoading.postValue(state)
     }
 
     private fun getLastUpdateDate() {
