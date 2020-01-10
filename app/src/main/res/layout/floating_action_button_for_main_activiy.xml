@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/float_act_margin_end"
-        android:layout_marginBottom="@dimen/float_act_margin_bottom"
+        android:layout_marginBottom="16dp"
         android:src="@drawable/ic_date_range"
         app:backgroundTint="@color/float_act_background"
         app:layout_constraintBottom_toBottomOf="parent"
